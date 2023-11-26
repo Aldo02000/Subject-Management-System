@@ -1,4 +1,3 @@
-// import app from './app.js'
 const app = require('./app')
 
 // Start the server listening on port 3000

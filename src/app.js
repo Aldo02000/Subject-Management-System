@@ -13,6 +13,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Set up middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: false }))
 
+
 // Set up middleware to display flash messages
 app.use(flash());
 
@@ -21,18 +22,22 @@ app.use(bodyParser.json());
 
 // Set the static file directory to 'views' and join it with the current directory (__dirname)
 app.use(express.static(path.join(__dirname, 'views')));
-app.use(express.static(path.join(__dirname)));
+
+// Setting up a static file server for the entire project directory, for the moment commented out
+//app.use(express.static(path.join(__dirname)));
 
 // Set the view engine to handlebars (.hbs) and use the 'hbs' engine
 app.engine('hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 
-// Set up session middleware with a secret key, and enable passport authentication and serialization
+// Set up session middleware with a secret key, 
 app.use(session({
-  secret: 'secret-key',
+  secret: '123456',
   resave: false,
   saveUninitialized: true
 }));
+
+// Enable passport authentication and serialization
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -41,7 +46,6 @@ const { initPassport } = require('./passportConfig');
 initPassport();
 
 const routes = require('./routes/routes');
-const { log } = require('console');
 app.use('/', routes);
 
 module.exports = app;
