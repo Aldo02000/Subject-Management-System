@@ -1,6 +1,6 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const connection = require('../db');
+const connection = require('../models/db');
 
 
 function isAdmin(req, res, next) {

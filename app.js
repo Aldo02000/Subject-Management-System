@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 
 // Set the views directory to 'views' and join it with the current directory (__dirname)
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'src/views'));
 
 // Set up middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: false }))
@@ -21,10 +21,10 @@ app.use(flash());
 app.use(bodyParser.json());
 
 // Set the static file directory to 'views' and join it with the current directory (__dirname)
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Setting up a static file server for the entire project directory, for the moment commented out
-//app.use(express.static(path.join(__dirname)));
+// app.use(express.static(path.join(__dirname)));
 
 // Set the view engine to handlebars (.hbs) and use the 'hbs' engine
 app.engine('hbs', exphbs.engine({ extname: '.hbs' }));
@@ -42,10 +42,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Initialize passport authentication and attach routes
-const { initPassport } = require('./passportConfig');
+const { initPassport } = require('./src/passportConfig');
 initPassport();
 
-const routes = require('./routes/routes');
+const routes = require('./src/routes/routes');
 app.use('/', routes);
 
 module.exports = app;
