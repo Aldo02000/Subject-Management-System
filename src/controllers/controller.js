@@ -1,6 +1,6 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const connection = require('../models/db');
+const query = require('../models/dbQueries')
 
 
 function isAdmin(req, res, next) {
@@ -51,8 +51,6 @@ exports.loginPost = (req, res, next) => {
     })(req, res, next);
 };
 
-let showSection = false;
-
 exports.welcome = (req, res) => {
     if (!req.user) {
         return res.status(401).send('Unauthorized');
@@ -79,89 +77,72 @@ exports.adduser = (req, res) => {
     res.render('addUser', { layout: 'admin' });
 }
 
-exports.find = (req, res, next) => {
-
-    let searchTerm = req.body.search;
-
-    connection.query('SELECT * FROM User WHERE NameOfUser LIKE ? OR Id LIKE ?', ['%' + searchTerm + '%', '%' + searchTerm + '%'], (err, results) => {
-        if (!err) {
-            res.render('home', { results, layout: 'admin' });
-        } else {
-            console.log(err);
-            next(err);
-        }
-    });
+exports.find = async (req, res, next) => {
+    try {
+        let searchTerm = req.body.search;
+        const results = await query.findUsers(searchTerm);
+        res.render('home', { results, layout: 'admin' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
 };
 
-exports.admin = (req, res, next) => {
+exports.admin = async (req, res, next) => {
     if (!req.user || !isAdmin) {
         res.status(401).send('Unauthorized');
         return;
     }
 
-    connection.query('SELECT * FROM User', (err, results) => {
-        if (!err) {
-            res.render('home', { results, layout: 'admin' });
-        } else {
-            console.log(err);
-            next(err);
-        }
-    });
+    try {
+        const results = await query.showUsers();
+        res.render('home', { results, layout: 'admin' });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
 };
 
 exports.logout = (req, res) => {
     req.logout(() => res.redirect('/login'));
 }
 
-exports.adduserPost = (req, res) => {
+exports.adduserPost = async (req, res) => {
     const { ID, fullName, email, password, role } = req.body;
-    const saltRounds = 10;
 
-    if (!ID || !fullName || !email || !password || !role) {
-        return res.render('addUser', { error: 'All fields are required', layout: 'admin' });
-    }
-
-    if (ID.length !== 6) {
-        return res.render('addUser', { error: 'ID must be exactly 6 characters', layout: 'admin' });
-    }
-
-    const sql = 'SELECT * FROM User WHERE Id = ?';
-    connection.query(sql, [ID], (err, results) => {
-        if (err) {
-            console.log(err);
-            return res.render('addUser', { error: 'Something went wrong', layout: 'admin' });
+    try {
+        if (!ID || !fullName || !email || !password || !role) {
+            return res.render('addUser', { error: 'All fields are required', layout: 'admin' });
+        }
+        console.log("Test");
+        if (ID.length !== 6) {
+            return res.render('addUser', { error: 'ID must be exactly 6 characters', layout: 'admin' });
         }
 
-        if (results.length > 0) {
+
+        const existingUser = await query.getUserByID(ID);
+
+        if (existingUser.length > 0) {
             return res.render('addUser', { error: 'ID already exists', layout: 'admin' });
         }
 
-        bcrypt.genSalt(saltRounds, function (err, salt) {
-            bcrypt.hash(password, salt, function (err, hash) {
-                if (err) throw err;
+        await query.addUser(ID, fullName, email, password, role);
+        res.render('addUser', { success: 'User added successfully', layout: 'admin' });
+    } catch (error) {
+        console.error(error);
+        res.render('addUser', { error: 'Something went wrong', layout: 'admin' });
+    }
+};
 
-                const sql = 'INSERT INTO User (Id, NameOfUser, Email, AccountPassword, RoleOfUser) VALUES (?, ?, ?, ?, ?)';
-                connection.query(sql, [ID, fullName, email, hash, role], (err, results) => {
-                    if (!err) {
-                        res.render('addUser', { success: 'User added successfully', layout: 'admin' })
-                    } else {
-                        console.log(err);
-                        return res.render('addUser', { error: 'Something went wrong', layout: 'admin' });
-                    }
-                })
-            });
-        });
-    })
-}
+exports.edituser = async (req, res) => {
 
-exports.edituser = (req, res) => {
-    connection.query('SELECT * FROM User WHERE ID = ?', [req.params.ID], (err, results) => {
-        if (!err) {
-            res.render('editUser', { results, layout: 'admin' })
-        } else {
-            console.log(err);
-        }
-    })
+    try {
+        const results = await query.editUser(req.params.ID);
+        res.render('editUser', { results, layout: 'admin' })
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
 }
 
 exports.edituserPost = (req, res) => {
@@ -177,7 +158,7 @@ exports.edituserPost = (req, res) => {
     }
 
     bcrypt.genSalt(saltRounds, function (err, salt) {
-        bcrypt.hash(password, salt, function (err, hash) {
+        bcrypt.hash(password, salt, async function (err, hash) {
             if (err) throw err;
 
             let sql = 'UPDATE User SET  NameOfUser = ?, Email = ?, RoleOfUser = ?,';
@@ -199,24 +180,24 @@ exports.edituserPost = (req, res) => {
                 values.push(req.params.ID);
             }
 
-            connection.query(sql, values, (err, results) => {
-                if (!err) {
-                    res.render('editUser', { success: 'User updated successfully', layout: 'admin' })
-                } else {
-                    console.log(err);
-                    return res.render('editUser', { error: 'Something went wrong', layout: 'admin' });
-                }
-            })
+            try {
+                await query.updateUser(sql, values);
+                res.render('editUser', { success: 'User updated successfully', layout: 'admin' })
+            } catch (error) {
+                console.error(error);
+                return res.render('editUser', { error: 'Something went wrong', layout: 'admin' });
+            }
         });
     });
 }
 
-exports.delete = (req, res) => {
-    connection.query('DELETE FROM User WHERE ID = ?', [req.params.ID], (err, results) => {
-        if (!err) {
-            res.redirect('/admin')
-        } else {
-            console.log(err);
-        }
-    })
+exports.delete = async (req, res) => {
+
+    try {
+        await query.deleteUser(req.params.ID);
+        res.redirect('/admin')
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
 }
