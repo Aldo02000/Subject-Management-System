@@ -1,7 +1,8 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const query = require('../models/dbQueries')
-
+const { customAlphabet } = require('nanoid');
+const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
 function isAdmin(req, res, next) {
     // Check if the user is authenticated
@@ -73,9 +74,6 @@ exports.addSection = (req, res) => {
     res.json({ success: true });
 }
 
-exports.adduser = (req, res) => {
-    res.render('addUser', { layout: 'admin' });
-}
 
 exports.find = async (req, res, next) => {
     try {
@@ -107,30 +105,62 @@ exports.logout = (req, res) => {
     req.logout(() => res.redirect('/login'));
 }
 
+exports.adduser = (req, res) => {
+    res.render('addUser', { layout: 'admin' });
+}
+
 exports.adduserPost = async (req, res) => {
-    const { ID, fullName, email, password, role } = req.body;
+    const {fullName, email, password, role } = req.body;
+
+    const generateID = customAlphabet(alphabet, 6);
+    const uniqueID = generateID();
 
     try {
-        if (!ID || !fullName || !email || !password || !role) {
-            return res.render('addUser', { error: 'All fields are required', layout: 'admin' });
-        }
-        console.log("Test");
-        if (ID.length !== 6) {
-            return res.render('addUser', { error: 'ID must be exactly 6 characters', layout: 'admin' });
+        if (!fullName || !email || !password || !role) {
+            return res.render('addUser', {
+                error: 'All fields are required', layout: 'admin', id: generatedID,
+                formData: {
+                    name: fullName,
+                    email: email,
+                }
+            });
         }
 
+        // if (ID.length !== 6) {
+        //     return res.render('addUser', {
+        //         error: 'ID must be exactly 6 characters', layout: 'admin',
+        //         formData: {
+        //             id: ID,
+        //             name: fullName,
+        //             email: email,
+        //         }
+        //     });
+        // }
 
-        const existingUser = await query.getUserByID(ID);
+
+        const existingUser = await query.getUserByID(uniqueID);
 
         if (existingUser.length > 0) {
-            return res.render('addUser', { error: 'ID already exists', layout: 'admin' });
+            return res.render('addUser', {
+                error: 'ID already exists', layout: 'admin',  id: uniqueID,
+                formData: {
+                    name: fullName,
+                    email: email,
+                }
+            });
         }
 
-        await query.addUser(ID, fullName, email, password, role);
+        await query.addUser(uniqueID, fullName, email, password, role);
         res.render('addUser', { success: 'User added successfully', layout: 'admin' });
     } catch (error) {
         console.error(error);
-        res.render('addUser', { error: 'Something went wrong', layout: 'admin' });
+        res.render('addUser', {
+            error: 'Something went wrong', layout: 'admin',  id: uniqueID,
+            formData: {
+                name: fullName,
+                email: email,
+            }
+        });
     }
 };
 
@@ -138,47 +168,67 @@ exports.edituser = async (req, res) => {
 
     try {
         const results = await query.editUser(req.params.ID);
-        res.render('editUser', { results, layout: 'admin' })
+        res.render('editUser', { layout: 'admin', results })
     } catch (error) {
         console.error(error);
         next(error);
     }
 }
 
-exports.edituserPost = (req, res) => {
-    const { ID, fullName, email, password, role } = req.body;
+exports.edituserPost = async (req, res) => {
+    const {fullName, email, password, role } = req.body;
     const saltRounds = 10;
 
-    if (!ID || !fullName || !email || !role) {
-        return res.render('editUser', { error: 'All fields are required', layout: 'admin' });
+    const results = await query.editUser(req.params.ID);
+
+    if (!fullName || !email || !role) {
+        return res.render('editUser', {
+            error: 'All fields are required', results, layout: 'admin',
+            formData: {
+                id: req.params.ID,
+                name: req.params.fullName,
+                email: req.params.email,
+            }
+        });
     }
 
-    if (ID.length !== 6) {
-        return res.render('addUser', { error: 'ID must be exactly 6 characters', layout: 'admin' });
-    }
+    // if (ID.length !== 6) {
+    //     return res.render('editUser', {
+    //         error: 'ID must be exactly 6 characters', layout: 'admin',
+    //         formData: {
+    //             id: ID,
+    //             name: fullName,
+    //             email: email,
+    //         }
+    //     });
+    // }
 
     bcrypt.genSalt(saltRounds, function (err, salt) {
         bcrypt.hash(password, salt, async function (err, hash) {
             if (err) throw err;
 
-            let sql = 'UPDATE User SET  NameOfUser = ?, Email = ?, RoleOfUser = ?,';
+            let sql = 'UPDATE User SET  NameOfUser = ?, Email = ?, RoleOfUser = ?';
             const values = [fullName, email, role];
 
             if (password) {
-                sql += ' AccountPassword = ?,';
+                sql += ', AccountPassword = ?';
                 values.push(hash);
             }
+             
+            sql += ' WHERE Id = ?';
+            values.push(req.params.ID);
 
-            if (ID) {
-                sql += ' Id = ?';
-                values.push(ID);
-                sql += ' WHERE Id = ?';
-                values.push(req.params.ID);
-            } else {
-                sql = sql.slice(0, -1); // Remove trailing comma
-                sql += ' WHERE Id = ?';
-                values.push(req.params.ID);
-            }
+
+            // if (ID) {
+            //     sql += ' Id = ?';
+            //     values.push(ID);
+            //     sql += ' WHERE Id = ?';
+            //     values.push(req.params.ID);
+            // } else {
+            //     sql = sql.slice(0, -1); // Remove trailing comma
+            //     sql += ' WHERE Id = ?';
+            //     values.push(req.params.ID);
+            // }
 
             try {
                 await query.updateUser(sql, values);
