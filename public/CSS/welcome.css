@@ -6,11 +6,13 @@
   }
   
   h1 {
+    width: 100%;
     font-size: 48px;
     margin-bottom: 20px;
   }
   
   p {
+    width: 100%;
     font-size: 24px;
     color: #666;
   }

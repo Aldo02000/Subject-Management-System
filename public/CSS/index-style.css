@@ -75,3 +75,24 @@ button {
 button:hover {
   background-color: #3e8e41;
 }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* Use a web-safe font */
+}
+
+.welcomeBox {
+    position:center;
+    background-color: transparent; /* Set background color */
+    backdrop-filter:blur(20px);
+    width: 1000px;
+    left: 50%;
+    padding: 20px; /* Add padding to create space around the content */
+    border-radius: 15px; /* Set border-radius for rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+    text-align: center; /* Center-align the content */
+    font-size: 2em;
+    color: rgb(0, 0, 0); /* Set text color to white */
+}
+
