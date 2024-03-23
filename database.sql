@@ -1,12 +1,10 @@
-FLUSH PRIVILEGES;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
 DROP DATABASE SubjectSystem;
 CREATE DATABASE SubjectSystem;
 USE SubjectSystem;
 
 CREATE TABLE User
 (
-	  Id CHAR(6) NOT NULL,
+	Id CHAR(6) NOT NULL,
     NameOfUser VARCHAR(30) NOT NULL,
     Email VARCHAR(30) NOT NULL,
     AccountPassword VARCHAR(100) NOT NULL,
@@ -15,7 +13,16 @@ CREATE TABLE User
 	  PRIMARY KEY (Id)
 );
 
+CREATE TABLE subjects (
+    subject_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    professor_id CHAR(6),
+    FOREIGN KEY (professor_id) REFERENCES User(Id)
+);
 
-INSERT INTO User (Id, NameOfUser, Email, AccountPassword, RoleOfUser) VALUES ('S00001', "Aldo Bega", "aldo.bega@example.com", "$2b$10$fyNRp.p.q9jdlpsxcFx74.dNdG4r3NDm6aRqEnoYh70OCz8xDZ08G", "Superadmin");
-
-SELECT * FROM User;
+CREATE TABLE sections (
+    section_id INT AUTO_INCREMENT PRIMARY KEY,
+    subject_id INT,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
