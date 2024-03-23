@@ -3,8 +3,6 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    
-    
 }
 
 body::before {
@@ -87,14 +85,14 @@ body {
     background-color: transparent; /* Set background color */
     backdrop-filter:blur(20px);
     width: 1000px;
-    left: 28%;
+    left: 20%;
     padding: 20px; /* Add padding to create space around the content */
     border-radius: 15px; /* Set border-radius for rounded corners */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
     text-align: center; /* Center-align the content */
     font-size: 2em;
     color: rgb(0, 0, 0); /* Set text color to white */
-    top: 50px;
+    top: 20px;
     height: 144px;
 }
 

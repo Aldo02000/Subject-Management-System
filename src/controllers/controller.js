@@ -1,6 +1,7 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const query = require('../models/dbQueries')
+const db = require('../models/dbConnection');
 const { customAlphabet } = require('nanoid');
 const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -66,7 +67,13 @@ exports.welcome = (req, res) => {
     }
 
     if (req.user.RoleOfUser === 'Professor') {
-        res.render('professor', { name: req.user.NameOfUser, layout: 'page' });
+        const professorId = req.user.Id;
+
+        db.query('SELECT * FROM subjects WHERE professor_id = ?', [professorId], (err, subjects) => {
+            if (err) throw err;
+
+            res.render('professor', { name: req.user.NameOfUser, professorId, subjects, layout: 'page' });
+        });
     }
 };
 
@@ -110,7 +117,7 @@ exports.adduser = (req, res) => {
 }
 
 exports.adduserPost = async (req, res) => {
-    const {fullName, email, password, role } = req.body;
+    const { fullName, email, password, role } = req.body;
 
     const generateID = customAlphabet(alphabet, 6);
     const uniqueID = generateID();
@@ -142,7 +149,7 @@ exports.adduserPost = async (req, res) => {
 
         if (existingUser.length > 0) {
             return res.render('addUser', {
-                error: 'ID already exists', layout: 'admin',  id: uniqueID,
+                error: 'ID already exists', layout: 'admin', id: uniqueID,
                 formData: {
                     name: fullName,
                     email: email,
@@ -155,7 +162,7 @@ exports.adduserPost = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.render('addUser', {
-            error: 'Something went wrong', layout: 'admin',  id: uniqueID,
+            error: 'Something went wrong', layout: 'admin', id: uniqueID,
             formData: {
                 name: fullName,
                 email: email,
@@ -176,7 +183,7 @@ exports.edituser = async (req, res) => {
 }
 
 exports.edituserPost = async (req, res) => {
-    const {fullName, email, password, role } = req.body;
+    const { fullName, email, password, role } = req.body;
     const saltRounds = 10;
 
     const results = await query.editUser(req.params.ID);
@@ -214,7 +221,7 @@ exports.edituserPost = async (req, res) => {
                 sql += ', AccountPassword = ?';
                 values.push(hash);
             }
-             
+
             sql += ' WHERE Id = ?';
             values.push(req.params.ID);
 
@@ -251,3 +258,40 @@ exports.delete = async (req, res) => {
         next(error);
     }
 }
+
+exports.createSubject = (req, res) => {
+    const { name } = req.body;
+    const professorId = req.params.Id; // Assuming the professor's ID is passed in the URL parameter
+
+    // Insert new subject into the database
+    db.query('INSERT INTO subjects (name, professor_id) VALUES (?, ?)', [name, professorId], (err, results) => {
+        if (err) throw err;
+        const subjectId = results.insertId; // Get the ID of the newly inserted subject
+        // Redirect to the welcome page or any other page as needed
+        res.redirect(`/welcome/${professorId}`);
+    });
+}
+
+exports.deleteSubject = (req, res) => {
+    const { Id, subjectId } = req.params;
+    
+
+    // Delete the subject from the database
+    db.query('DELETE FROM subjects WHERE subject_id = ?', [subjectId], (err, result) => {
+        if (err) throw err;
+        // Redirect back to the welcome page after deletion
+        res.redirect(`/welcome/${Id}`);
+    });
+}
+
+exports.viewSubjectDetails = (req, res) => {
+    const { subjectId } = req.params;
+
+    // Fetch subject details from the database
+    db.query('SELECT * FROM subjects WHERE subject_id = ?', [subjectId], (err, subject) => {
+        if (err) throw err;
+
+        // Render the subject details page with subject information
+        res.render('subject', { name: subject[0].name });
+    });
+};
