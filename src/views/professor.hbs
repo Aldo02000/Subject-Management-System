@@ -2,35 +2,58 @@
 <html>
 
 <head>
-	<title>My Web Page</title>
-	<base href="/">
-	<link rel="stylesheet" type="text/css" href="CSS/professor.css" />
-	<script src="../page.js"></script>
-</head>
+    <title>My Web Page</title>
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/professor.css" />
+    <script src="../page.js"></script>
+</head> 
+ 
+
 
 <body>
 
-	<form action="welcome/{{professorId}}/createSubject" method="POST">
-		<input type="hidden" name="professorId" value="{{ professor.id }}">
-		<label for="subjectName">Subject Name:</label>
-		<input type="text" id="subjectName" name="name" required>
-		<button type="submit">Create Subject</button>
-	</form>
+    <div class="sidebar">
+        <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="/timetable">Timetable</a></li>
+            <li><a href="#">Announcements</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
 
+    <div class="main-content">
+        <div class="welcome-frame">
+            <h1>Welcome, {{ name }}</h1>
+            <!-- Display additional information such as email and department -->
+            <div class="profile-details">
+                <p><strong>Email:</strong> {{ email }}</p>
+                <p><strong>Department: Information Engineering </strong> {{ department }}</p>
+            </div>
+        </div>
 
-	<h1>Welcome, {{ name }}</h1>
+        <form action="welcome/{{professorId}}/createSubject" method="POST">
+            <input type="hidden" name="professorId" value="{{ professor.id }}">
+            <label for="subjectName">Subject Name:</label>
+            <input type="text" id="subjectName" name="name" required>
+            <button type="submit">Create Subject</button>
+        </form>
 
-	<h2>Your Subjects:</h2>
-	<ul>
-		{{#each subjects}}
-		<li>
-		<a href="/subject/{{ this.subject_id }}">{{ this.name }}</a>
-		<form action="welcome/{{professor_id}}/deleteSubject/{{this.subject_id}}" method="POST" style="display:inline;">
-			<button type="submit">Delete</button>
-		</form>
-		</li>
-		{{/each}}
-	</ul>
+        <h2>Your Subjects:</h2>
+        <div class="subject-list">
+            {{#each subjects}}
+            <div class="subject-item">
+                <a href="/subject/{{ this.subject_id }}"><p>{{ this.name }}</p></a>
+                <!-- Move the delete button to the right -->
+                <form action="welcome/{{professor_id}}/deleteSubject/{{this.subject_id}}" method="POST" class="delete-form">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+            <!-- Add a light thin grey line between subjects -->
+            <hr class="subject-divider">
+            {{/each}}
+        </div>
+    </div>
+
 </body>
 
 </html>

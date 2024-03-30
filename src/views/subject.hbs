@@ -1,2 +1,124 @@
-<h1>Subject Details</h1>
-<h2>{{ name }}</h2>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }}</title>
+    <style>
+        /* CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .course-details {
+            margin-bottom: 30px;
+        }
+
+        .course-details h2 {
+            color: #333;
+        }
+
+        .course-requirements,
+        .course-content,
+        .course-price {
+            margin-bottom: 20px;
+        }
+
+        .course-requirements ul,
+        .course-content ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .enroll-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .enroll-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .enroll-link:hover {
+            background-color: #0056b3;
+        }
+
+        .key-input {
+            flex: 1;
+            margin-left: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .key-input:focus {
+            border-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>{{ name }}</h1>
+    </header>
+
+    <main>
+        <section class="course-details">
+            <h2>Description</h2>
+            <p>This course covers various topics in mathematics including algebra, calculus, geometry, and more.</p>
+        </section>
+
+        <section class="course-requirements">
+            <h2>Requirements</h2>
+            <ul>
+                <li>Basic understanding of arithmetic</li>
+                <li>Knowledge of basic algebra concepts</li>
+            </ul>
+        </section>
+
+        <section class="course-content">
+            <h2>Course Content</h2>
+            <ul>
+                <li>Introduction to algebraic expressions</li>
+                <li>Calculus fundamentals</li>
+                <li>Geometry and trigonometry</li>
+            </ul>
+        </section>
+
+        <section class="course-price">
+            <h2>Price</h2>
+            <p>$99.99</p>
+        </section>
+
+        <section class="enroll-button">
+            <a href="#" class="enroll-link">Enroll Now</a>
+            <input type="text" class="key-input" placeholder="Enter key to enroll">
+        </section>
+    </main>
+</body>
+
+</html>
