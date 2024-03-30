@@ -1,59 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Web Page</title>
     <base href="/">
     <link rel="stylesheet" type="text/css" href="CSS/professor.css" />
     <script src="../page.js"></script>
-</head> 
- 
-
+</head>
 
 <body>
 
-    <div class="sidebar">
+
+
+<div class="wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-menu">
+                <div class="logo">mytool.</div>
+                <ul class="menu-items">
+                    <li><a href="#">Dashboard</a></li>                   
+                    <li><a href="#">Slides</a></li>
+                    <li><a href="#">Student Search</a></li>
+                    <li><a href="#">Attendance</a></li>
+                    <li><a href="#">Setting</a></li>
+					
+                </ul>
+                <div class="logout-section">
+    <a href="/logout" class="logout-button">Logout</a>
+</div>
+            </div>
+        </nav>
+
+
+
+   {{!--  <div class="sidebar">      
         <ul>
             <li><a href="#" class="active">Dashboard</a></li>
             <li><a href="/timetable">Timetable</a></li>
             <li><a href="#">Announcements</a></li>
             <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+        </ul>  
+    </div> --}}
 
-    <div class="main-content">
-        <div class="welcome-frame">
-            <h1>Welcome, {{ name }}</h1>
-            <!-- Display additional information such as email and department -->
-            <div class="profile-details">
-                <p><strong>Email:</strong> {{ email }}</p>
-                <p><strong>Department: Information Engineering </strong> {{ department }}</p>
-            </div>
+
+
+   {{!--  <div class="main-content">
+        <div class="header">
+            <h1>Hi {{ name }}, Welcome!</h1>
+            <p>Welcome to your portal.</p>
+            <!-- Add search bar here if needed -->
         </div>
 
-        <form action="welcome/{{professorId}}/createSubject" method="POST">
+       {{!--  <div class="create-subject">
+            <h2>Create a new subject</h2>
+            <p>Enter details for the subject to be created.</p>
+            <form action="welcome/{{professorId}}/createSubject" method="POST">
+                <input type="hidden" name="professorId" value="{{ professor.id }}">
+                <input type="text" id="subjectName" name="name" placeholder="Enter subject name" required>
+                <button type="submit" id="createSubjectBtn">Create now</button>
+            </form>
+        </div> --}}
+
+{{!-- <div class="welcome-frame">
+    <div class="text-content">
+        <h2>Create a new subject</h2>
+        <p>Enter details for new subject to be created.</p>
+        <form action="welcome/{{professorId}}/createSubject" method="POST" class="create-subject-form">
             <input type="hidden" name="professorId" value="{{ professor.id }}">
-            <label for="subjectName">Subject Name:</label>
-            <input type="text" id="subjectName" name="name" required>
-            <button type="submit">Create Subject</button>
+            <input type="text" id="subjectName" name="name" placeholder="Enter name..." required>
+            <button type="submit" id="createSubjectBtn">Create Now</button>
         </form>
+    </div>
+</div>
 
-        <h2>Your Subjects:</h2>
-        <div class="subject-list">
-            {{#each subjects}}
-            <div class="subject-item">
-                <a href="/subject/{{ this.subject_id }}"><p>{{ this.name }}</p></a>
-                <!-- Move the delete button to the right -->
-                <form action="welcome/{{professor_id}}/deleteSubject/{{this.subject_id}}" method="POST" class="delete-form">
-                    <button type="submit">Delete</button>
-                </form>
-            </div>
-            <!-- Add a light thin grey line between subjects -->
-            <hr class="subject-divider">
-            {{/each}}
+
+<div class="subjects-container">
+    {{#each subjects}}
+    <div class="subject-item">
+        <h3 class="subject-title">{{this.name}}</h3>
+        <form action="welcome/{{professor_id}}/deleteSubject/{{this.id}}" method="POST" class="delete-form">
+            <button type="submit" class="btn delete-btn">Delete</button>
+        </form>
+    </div>
+    {{/each}}
+</div>
+
+ --}}
+
+
+
+<!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1>Hi {{name}}, Good Afternoon!</h1>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                    <button>🔍</button>
+                </div>
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/150" alt="Profile">
+                    <span>Name Name</span>
+                </div>
+            </header>
+            
+            <!-- New Subject Section -->
+            <!-- New Subject Section -->
+<section class="new-subject">
+    <h2>Create a new subject</h2>
+    <form action="welcome/{{professorId}}/createSubject" method="POST" class="input-group">
+        <input type="hidden" name="professorId" value="{{ professor.id }}">
+        <input type="text" name="name" placeholder="Enter subject name" required>
+        <button type="submit">Create Now</button>
+    </form>
+</section>
+
+
+            <!-- Subjects List -->
+<!-- Subjects List -->
+<section class="subjects-list">
+    <h2>Your Subjects</h2>
+    {{#each subjects}}
+    <div class="subject-card">
+        <!-- Wrap the subject name with an anchor tag -->
+        <a href="/subject/{{this.subject_id}}">
+            <span>{{this.name}}</span>
+        </a>
+        <!-- Delete subject form -->
+        <form action="welcome/{{professor_id}}/deleteSubject/{{this.subject_id}}" method="POST">
+            <button type="submit" class="delete-btn">Delete</button>
+        </form>
+    </div>
+    {{/each}}
+</section>
+
+
+
+
         </div>
     </div>
-
 </body>
-
 </html>
+   
