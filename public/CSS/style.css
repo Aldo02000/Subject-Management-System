@@ -1,6 +1,6 @@
 
 /* General page styles */
-body, html {
+/* body, html {
   margin: 0;
   padding: 0;
   background: #ffffff;
@@ -45,7 +45,7 @@ body, html {
 .login-btn {
   width: 100%;
   padding: 15px;
-  background-color: #4CAF50;
+  background-color: #2964e4;
   color: white;
   border: none;
   border-radius: 4px;
@@ -54,7 +54,7 @@ body, html {
 }
 
 .login-btn:hover {
-  background-color: #45a049;
+  background-color: #2964e4;
 }
 
 .forgot-password {
@@ -83,7 +83,118 @@ footer a {
 
 
 
+ */
 
+
+
+
+
+
+
+
+
+ /* General page styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  background: #e5e5e5; /* Light gray background for contrast */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* A more modern font */
+}
+
+.login-container {
+  max-width: 400px; /* Slightly reduced width for a more modern look */
+  margin: 100px auto; /* Increase margin for more breathing room */
+  padding: 40px; /* Increased padding for a better visual hierarchy */
+  text-align: center;
+  background: #ffffff; /* Pure white for the container */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* More pronounced shadow for depth */
+  border-radius: 8px; /* Rounded corners for the container */
+}
+
+.login-container h1 {
+  color: #202020; /* Darker color for better readability */
+  font-size: 2rem; /* Larger font size for the title */
+  margin-bottom: 5px; /* Reduced margin bottom for tighter composition */
+}
+
+.login-container p {
+  color: #606060; /* Lighter text color for the subtitle */
+  margin-bottom: 30px; /* More space before the form starts */
+}
+
+.login-box {
+  background: #ffffff;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.input-box {
+  margin: 20px 0;
+  position: relative; /* For the icon positioning */
+}
+
+.input-box input {
+  width: calc(100% - 30px); /* Calculating width to make space for the icon */
+  padding: 15px;
+  border: 2px solid #d9d9d9; /* Lighter border for the inputs */
+  border-radius: 20px; /* Rounded borders for the inputs */
+  font-size: 1rem; /* Larger font size for better readability */
+  box-sizing: border-box; /* To include padding in width calculation */
+}
+
+.input-box input:focus {
+  outline: none; /* Removes the default focus outline */
+  border-color: #2964e4; /* Highlight color for input when focused */
+}
+
+.login-btn {
+  width: calc(100% - 30px); /* Match the input fields width */
+  padding: 15px;
+  background-color: #2964e4;
+  color: white;
+  border: none;
+  border-radius: 20px; /* Rounded borders for the button */
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s; /* Smooth transition for hover effect */
+  font-size: 1rem; /* Increased font size for button text */
+}
+
+.login-btn:hover {
+  background-color: #1d56c2; /* Slightly darker shade on hover */
+}
+
+.information-box {
+  background: #ffffff; /* Pure white for the information box */
+  margin-top: 40px; /* Increased margin for better separation */
+  padding: 20px;
+  font-size: 0.9em;
+  border-left: 4px solid #2964e4; /* Adds an accent color to the box */
+  text-align: left; /* Aligns text to the left for a cleaner look */
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 0.8em;
+  color: #707070; /* Lighter color for less emphasis on footer */
+}
+
+footer a {
+  color: #2964e4;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline; /* Subtle hover effect for links */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-container {
+    margin: 20px; /* Less margin on smaller screens */
+    padding: 20px; /* Less padding on smaller screens */
+  }
+}
 
 
 
