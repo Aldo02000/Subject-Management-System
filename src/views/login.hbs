@@ -1,39 +1,43 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta: http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Login Form</title>
     <link rel="stylesheet" type="text/css" href="CSS/style.css">
   </head>
   <body>
-    <div class="login-box">
-      <a href="/" class="icon-close">
-        <ion-icon name="close"></ion-icon>     
-         </a>
-      <h1>Login</h1>
-      <form action="/login" method="post">
-       <div class="input-box">
-          <span class="icon"><ion-icon 
-          name="person-circle-outline"></ion-icon></span>
-          <label for="username" id="username">Username</label>
-          <input type="text"  name="username" required>
-        </div>
-        <div class="input-box">
-          <span class="icon"><ion-icon 
-          name="lock-closed-outline"></ion-icon></span>
-          <label for="password" id="password">Password</label>  
-          <input type="password"  name="password" required>
-        </div>     
-          <button type="submit" class="Login"onclick="slideLoginForm()">Login</button> 
-      </form>
-      {{#if message}}
-        <p>{{message}}</p>
-      {{/if}}
+    <div class="login-container">
+      <h1> STUMA </h1>
+      <p>Subject Management System</p>
+      <div class="login-box">
+        <form action="/login" method="post">
+          <div class="input-box">
+            <input type="text" name="username" placeholder="Username" required>
+          </div>
+          <div class="input-box">
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit" class="login-btn">Sign in</button>
+        </form>
+      </div>
+      <div class="information-box">
+        <p>Information <span>ℹ️</span><br>Student portal sponsored by Haw Hamburg.</p>
+      </div>
+      <footer>
+        <p>Site course catalog | Clean stuma cookies</p>
+        <p>Copyright © 2024 stuma - All rights reserved</p>
+        <a href="#">English (US)</a>
+      </footer>
     </div>
     <script src="JS/script.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   </body>
+</html>
+
+  </body>
+
+
 </html>
