@@ -13,7 +13,7 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-menu">
-                <div class="logo">mytool.</div>
+                <div class="logo">STUMA</div>
                 <ul class="menu-items">
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Course Modules</a></li>
@@ -23,8 +23,7 @@
                     <li><a href="#">Setting</a></li>
                 </ul>
                 <div class="logout-section">
-                    <span>Logged in: 12:00:07</span>
-                    <button>Logout</button>
+                     <a href="/logout"><button>Logout</button></a>
                 </div>
             </div>
         </nav>
@@ -51,11 +50,34 @@
             <!-- Subject Description Section -->
             <section class="subject-description">
                 <p>
-                    Mathematics is an area of knowledge that includes such topics as numbers (arithmetic and number theory),
-                    formulas and related structures (algebra), shapes and the spaces in which they are contained (geometry),
-                    and quantities and their changes (calculus and analysis).
+                    Here comes the description of each subject. 
                 </p>
             </section>
+
+
+
+<!-- Announcements Section -->
+            <section class="announcements">
+                <h2>Announcements</h2>
+                <ul>
+                    <!-- Dynamically list announcements here. Example: -->
+                    <li>New assignment uploaded.</li>
+                    <li>Midterm exam schedule announced.</li>
+                    <!-- More announcements -->
+                </ul>
+            </section>
+            
+            <!-- Uploading Lecture Material Section -->
+            <section class="upload-material">
+                <h2>Upload Lecture Material</h2>
+                <form action="/path/to/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="lectureMaterial" required>
+                    <button type="submit">Upload</button>
+                </form>
+            </section>
+
+
+
 
             <!-- Enrolled Students Section -->
             <section class="enrolled-students">

@@ -1,26 +1,63 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-	<title>My Web Page</title>
-	<script src="../page.js"></script>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Description - Mathematics</title>
+    <base href="/">
+    <link rel="stylesheet" type="text/css" href="CSS/student.css" />
+    <script src="../page.js"></script> 
 </head>
-
 <body>
-	<div class="section" id="lectures">
-		<h1>Lectures</h1>
-		<p>This section contains information about lectures.</p>
-	</div>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">STUMA</div>
+            <ul class="menu-items">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="students.html">Students</a></li>
+                <!-- Add other menu items here -->
+            </ul>
+            <div class="logout-section">
+    <a href="/logout" class="logout-button">Logout</a>
+</div>
+        </nav>
 
-	<div class="section" id="labs">
-		<h1>Labs</h1>
-		<p>This section contains information about labs.</p>
-	</div>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Student Portal Header -->
+            <header class="top-nav">
+                <span class="portal-text">Student Portal</span>
+            </header>
 
-	<div class="section" id="results">
-		<h1>Results</h1>
-		<p>This section contains information about results.</p>
-	</div>
+            <!-- Enrolled Courses Section -->
+            <section class="enrolled-courses">
+                <h2>Enrolled Courses</h2>
+                <ul>
+                    <!-- Enrolled courses list -->
+                    <li>Course Name 1</li>
+                    <li>Course Name 2</li>
+                    <!-- More enrolled courses -->
+                </ul>
+            </section>
+
+            <!-- Available Courses Section -->
+            <section class="available-courses">
+                <h2>Available Courses</h2>
+                <ul>
+                    <!-- Available courses list -->
+                    <li>
+                        <span>Course Name A</span>
+                        <button class="enroll-btn">Enroll</button>
+                    </li>
+                    <li>
+                        <span>Course Name B</span>
+                        <button class="enroll-btn">Enroll</button>
+                    </li>
+                    <!-- More available courses -->
+                </ul>
+            </section>
+        </div>
+    </div>
 </body>
-
 </html>

@@ -128,7 +128,7 @@ body, html {
 /* New Subject Section */
 .new-subject h2, .subjects-list h2 {   
     margin-bottom: 30px;
-    color: #2c3e50; /* Text color */
+    color: #0047AB; /* Text color */
     font-size: 20px;
 }
 
@@ -271,4 +271,34 @@ body, html {
 
 .logout-button:hover {
     background-color: #c0392b; /* Darker shade on hover */
+}
+
+/* General Enhancements for Consistency */
+.main-content > section {
+    margin-bottom: 30px; /* Ensures consistent spacing between sections */
+    border: 1px solid #d3d3d3; /* Adds a border to each section */
+    padding: 20px; /* Internal padding for content */
+    border-radius: 5px; /* Slightly rounded corners for a modern look */
+    background-color: #ffffff; /* Ensures a white background for content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+/* Adjustments for the New Subject form */
+.input-group {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap in smaller screens */
+    gap: 10px; /* Space between form elements */
+    justify-content: center; /* Centers the items */
+}
+
+.input-group input, .input-group button {
+    flex-grow: 1; /* Allows input and button to fill available space */
+    max-width: 200px; /* Ensures they don’t stretch too much */
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .input-group {
+        flex-direction: column; /* Stacks input above button on smaller screens */
+    }
 }

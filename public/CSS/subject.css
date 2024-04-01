@@ -159,3 +159,102 @@ body, html {
     justify-content: space-between;
     align-items: center;
 }
+
+
+/* Announcements Section Styles */
+.announcements h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.announcements ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.announcements li {
+    background: #f8f9fa;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+/* Uploading Lecture Material Section Styles */
+.upload-material h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+
+.upload-material input[type="file"] {
+    flex-grow: 1; /* Allows the file input to take up available space */
+}
+
+.upload-material button {
+    width: auto; /* Allows the button to size itself based on its content */
+    padding: 10px 20px; /* Keeps the padding but controls the size */
+    background-color: #0047AB; /* Or any color that fits your design */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-block; /* Makes the button only as wide as its content */
+    /* Centering the button if the form is flex */
+    margin: 0 auto; /* Centers the button in the form if the form's flex-direction is column */
+    margin-bottom: 10px; /* Adds a little space below the button */
+}
+
+.upload-material form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Aligns children (input and button) to the center */
+}
+
+
+.upload-material button:hover {
+    background-color: #003687; /* Slightly darker on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Global Styles for All Sections in Main Content */
+.main-content > section {
+    border: 1px solid #d3d3d3; /* Thin grey border for framing */
+    padding: 20px; /* Adds padding inside the sections */
+    margin-bottom: 20px; /* Adds space between each section */
+    border-radius: 4px; /* Optional: Adds rounded corners for a softer look */
+    background: #ffffff; /* Ensures the background within the frame is white */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+/* You might need to adjust the last section's margin-bottom to fit the overall design */
+.main-content > section:last-child {
+    margin-bottom: 40px; /* Adds a bit more space at the bottom of the last section */
+}
+
+/* Update specific section styles if needed */
+/* For example, the Announcements and Upload Material sections */
+.announcements ul, .enrolled-students ul {
+    margin-top: 10px; /* Adds a bit of space between the title and list */
+}
+
+/* Adjusts the upload form layout to align nicely within the new framed style */
+.upload-material form {
+    flex-direction: column; /* Stack the elements vertically */
+    align-items: stretch; /* Align items to stretch to the full width of the form */
+}
+
+.upload-material input[type="file"] {
+    margin-bottom: 10px; /* Adds space between the file input and the submit button */
+}
