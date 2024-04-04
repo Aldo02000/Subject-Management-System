@@ -15,7 +15,7 @@
 
 
 <div class="wrapper">
-        <!-- Sidebar -->
+        <!-- sidebar -->
         <nav class="sidebar">
             <div class="sidebar-menu">
                 <div class="logo">STUMA</div>
@@ -33,67 +33,9 @@
             </div>
         </nav>
 
-
-
-   {{!--  <div class="sidebar">      
-        <ul>
-            <li><a href="#" class="active">Dashboard</a></li>
-            <li><a href="/timetable">Timetable</a></li>
-            <li><a href="#">Announcements</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>  
-    </div> --}}
-
-
-
-   {{!--  <div class="main-content">
-        <div class="header">
-            <h1>Hi {{ name }}, Welcome!</h1>
-            <p>Welcome to your portal.</p>
-            <!-- Add search bar here if needed -->
-        </div>
-
-       {{!--  <div class="create-subject">
-            <h2>Create a new subject</h2>
-            <p>Enter details for the subject to be created.</p>
-            <form action="welcome/{{professorId}}/createSubject" method="POST">
-                <input type="hidden" name="professorId" value="{{ professor.id }}">
-                <input type="text" id="subjectName" name="name" placeholder="Enter subject name" required>
-                <button type="submit" id="createSubjectBtn">Create now</button>
-            </form>
-        </div> --}}
-
-{{!-- <div class="welcome-frame">
-    <div class="text-content">
-        <h2>Create a new subject</h2>
-        <p>Enter details for new subject to be created.</p>
-        <form action="welcome/{{professorId}}/createSubject" method="POST" class="create-subject-form">
-            <input type="hidden" name="professorId" value="{{ professor.id }}">
-            <input type="text" id="subjectName" name="name" placeholder="Enter name..." required>
-            <button type="submit" id="createSubjectBtn">Create Now</button>
-        </form>
-    </div>
-</div>
-
-
-<div class="subjects-container">
-    {{#each subjects}}
-    <div class="subject-item">
-        <h3 class="subject-title">{{this.name}}</h3>
-        <form action="welcome/{{professor_id}}/deleteSubject/{{this.id}}" method="POST" class="delete-form">
-            <button type="submit" class="btn delete-btn">Delete</button>
-        </form>
-    </div>
-    {{/each}}
-</div>
-
- --}}
-
-
-
-<!-- Main Content -->
+<!-- main content -->  
         <div class="main-content">
-            <!-- Header -->
+            <!-- header -->
             <header class="header">
                 <h1>Hi {{name}}, Good Afternoon!</h1>
                 <div class="search-bar">
@@ -106,7 +48,7 @@
                 </div>
             </header>
             
-            <!-- New Subject Section -->        
+            <!-- new subject -->        
 
 <section class="new-subject">
     <h2>Create a new subject</h2>
@@ -119,16 +61,16 @@
 
 
 
-<!-- Subjects List -->
+<!-- subjects List -->
 <section class="subjects-list">
     <h2>Your Subjects</h2>
     {{#each subjects}}
     <div class="subject-card">
-        <!-- Wrap the subject name with an anchor tag -->
+        
         <a href="/subject/{{this.subject_id}}">
             <span>{{this.name}}</span>
         </a>
-        <!-- Delete subject form -->
+        <!-- delete  -->  
         <form action="welcome/{{professor_id}}/deleteSubject/{{this.subject_id}}" method="POST">
             <button type="submit" class="delete-btn">Delete</button>
         </form>

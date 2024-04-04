@@ -1,6 +1,3 @@
-/* styles.css */
-
-
 body, html {
   height: 100%;
   margin: 0;
@@ -21,18 +18,18 @@ body, html {
 
 .left-section {
   left: 0;
-  width: 50%; /* Adjust the width as needed */
+  width: 50%; 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 5%; /* Padding from the left side */
+  padding-left: 5%; 
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0); /* Transparent background */
+  background: rgba(255, 255, 255, 0); 
   transition: background-color 0.3s, color 0.3s;
 }
 
 .left-section:hover {
-  background-color: #0056b3; /* This is the dark blue color on the right side of the gradient */
+  background-color: #0056b3; 
 }
 
 .title h1 {
@@ -41,7 +38,7 @@ body, html {
   margin: 0;
   text-align: right;
  padding: 0px 50px;
-  color: #0047AB; /* The blue color from the left side of the gradient */
+  color: #0047AB; 
   transition: color 0.3s;
 }
 
@@ -51,7 +48,7 @@ body, html {
   margin: 0;
   text-align: right;
  padding: 0px 50px;
-  color: #0047AB; /* The blue color from the left side of the gradient */
+  color: #0047AB; 
   transition: color 0.3s;
 }
 
@@ -61,11 +58,11 @@ body, html {
 
 .right-section {
   right: 0;
-  width: 50%; /* Adjust the width as needed */
+  width: 50%; 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-right: 5%; /* Padding from the right side */
+  padding-right: 5%; 
   box-sizing: border-box;
 }
 
@@ -74,8 +71,8 @@ body, html {
   font-weight: 400;
   text-align: left;
  padding: 0px 0px 0px 50px;
-  margin-top: 5rem; /* Position subtext below the STUMA text */
-  color: #0047AB; /* The blue color from the left side of the gradient */
+  margin-top: 5rem; 
+  color: #0047AB; 
 }
 
  

@@ -11,10 +11,10 @@ body, html {
     min-height: 100vh;
 }
 
-/* Sidebar styles */
+/* sidebar styling and feature implementation */
 .sidebar {
     width: 250px;
-    background: #0047AB; /* Adjusted sidebar color */
+    background: #0047AB; 
     color: #ecf0f1;
     padding: 20px;
 }
@@ -34,21 +34,22 @@ body, html {
 
 .menu-items li a {
     text-decoration: none;
-    color: inherit; /* Ensure text color is inherited from the sidebar */
+    color: inherit; /* inheriting test color */
     display: block;
-    transition: padding-left 0.3s, background-color 0.3s; /* Smooth transition for hover effect */
+    transition: padding-left 0.3s, background-color 0.3s; /* adding hover effect */
 }
 
 .menu-items li a:hover {
-    background-color: #34495e; /* Hover background color */
-    padding-left: 24px; /* Make room for the border */
-    border-left: 4px solid #f39c12; /* Highlight effect on hover */
+    background-color: #34495e; 
+    padding-left: 24px; 
+    border-left: 4px solid #f39c12; 
 }
 
+/* logout features and design */
 .logout-section {
     padding: 20px;
     text-align: center;
-    border-top: 1px solid #34495e; /* Separator line */
+    border-top: 1px solid #34495e; 
 }
 
 .logout-section span {
@@ -58,7 +59,7 @@ body, html {
 
 .logout-section button {
     padding: 10px 20px;
-    background-color: #e74c3c; /* Logout button color */
+    background-color: #e74c3c; 
     color: white;
     border: none;
     border-radius: 4px;
@@ -67,15 +68,15 @@ body, html {
 }
 
 .logout-section button:hover {
-    background-color: #c0392b; /* Darker shade on hover */
+    background-color: #c0392b; 
 }
 
-/* Main content styles */
+/* this code is for the main content of the page */
 .main-content {
     flex: 1;
     padding: 40px;
-    background: #ffffff; /* Main content background */
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05); /* Soft shadow for depth */
+    background: #ffffff; 
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05); 
 }
 
 .header {
@@ -88,7 +89,7 @@ body, html {
 .header h1 {
     margin: 0;
     font-size: 24px;
-    color: #2c3e50; /* Header text color */
+    color: #2c3e50; 
 }
 
 .search-bar {
@@ -100,7 +101,7 @@ body, html {
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    flex-grow: 1; /* Ensure input expands */
+    flex-grow: 1; 
 }
 
 .search-bar button {
@@ -118,17 +119,17 @@ body, html {
 .user-profile img {
     border-radius: 50%;
     margin-right: 10px;
-    width: 50px; /* Adjusted size to match the avatar size in the screenshot */
+    width: 50px; 
 }
 
 .user-profile span {
     font-weight: bold;
 }
 
-/* New Subject Section */
+/* create new subject features */
 .new-subject h2, .subjects-list h2 {   
     margin-bottom: 30px;
-    color: #0047AB; /* Text color */
+    color: #0047AB; 
     font-size: 20px;
 }
 
@@ -147,26 +148,26 @@ body, html {
 
 .input-group button {
     padding: 10px 20px;
-    background-color: #0047AB; /* Button color */
+    background-color: #0047AB; 
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    transition: background-color 0.3s; 
 }
 
 .input-group button:hover {
-    background-color: #0047AB; /* Darker shade on hover */
+    background-color: #0047AB; 
 }
 
 
 
-/* Subjects List */
+/* how subject lsit appears on the main page */
 .subjects-list h2 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-bottom: 20px; /* Adjust if more or less space is needed */
+    margin-bottom: 20px;
     margin-top: 30px;
 }
 
@@ -176,17 +177,18 @@ body, html {
     background: #fff;
     border-radius: 10px;
     padding: 20px;
-    width: calc(50% - 20px); /* Ensure the cards are 50% width minus the gap */
+    width: calc(50% - 20px); 
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     display: flex;
     align-items: left;
     justify-content: space-between;
 }
 
+/* image can be added to the subjects, selecting a generic image */
 .subject-card img {
     border-radius: 50%;
-    width: 50px; /* Image size */
-    height: 50px; /* Image size */
+    width: 50px; 
+    height: 50px; 
     object-fit: cover;
     margin-right: 20px;
 }
@@ -198,7 +200,7 @@ body, html {
 
 .subject-card button {
     padding: 5px 10px;
-    background-color: #ff4d4f; /* Delete button color */
+    background-color: #ff4d4f; 
     color: white;
     border: none;
     border-radius: 4px;
@@ -207,31 +209,32 @@ body, html {
 }
 
 .subject-card button:hover {
-    background-color: #cc0000; /* Darker shade on hover */
+    background-color: #cc0000; 
 }
 
-/* Remove additional margin-top from the first subject card */
+/* remove additional space */
+
 .subject-card:first-child {
-    margin-top: 0; /* This line ensures there's no extra space above the first card */
+    margin-top: 0; 
 }
 
-/* Delete Button Styles */
+/* delete button: red */
 .delete-btn {
-    padding: 10px 15px; /* Adjust padding to your preference */
-    background-color: #d9534f; /* A standard 'delete' or 'error' color */
-    color: white; /* Text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
-    transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+    padding: 10px 15px; 
+    background-color: #d9534f; 
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.2s ease; 
 }
 
 .delete-btn:hover {
-    background-color: #c9302c; /* Darker color on hover */
+    background-color: #c9302c; 
 }
 
 
-/* Responsive considerations */
+/* media response */
 @media (max-width: 768px) {
     .wrapper {
         flex-direction: column;
@@ -257,48 +260,47 @@ body, html {
 }
 
 .logout-button {
-    display: inline-block; /* Allows setting padding and margins */
+    display: inline-block; 
     padding: 10px 20px;
-    background-color: #e74c3c; /* Red color for the logout button */
+    background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    text-decoration: none; /* Remove underline from link */
+    text-decoration: none; 
     text-align: center;
-    transition: background-color 0.3s; /* Smooth background transition */
+    transition: background-color 0.3s; 
 }
 
 .logout-button:hover {
-    background-color: #c0392b; /* Darker shade on hover */
+    background-color: #c0392b; 
 }
 
-/* General Enhancements for Consistency */
+/* padding, spacing and border radius settings*/
 .main-content > section {
-    margin-bottom: 30px; /* Ensures consistent spacing between sections */
-    border: 1px solid #d3d3d3; /* Adds a border to each section */
-    padding: 20px; /* Internal padding for content */
-    border-radius: 5px; /* Slightly rounded corners for a modern look */
-    background-color: #ffffff; /* Ensures a white background for content */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+    margin-bottom: 30px; 
+    border: 1px solid #d3d3d3; 
+    padding: 20px; 
+    border-radius: 5px; 
+    background-color: #ffffff; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
 }
 
-/* Adjustments for the New Subject form */
 .input-group {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap in smaller screens */
-    gap: 10px; /* Space between form elements */
-    justify-content: center; /* Centers the items */
+    flex-wrap: wrap; 
+    gap: 10px;
+    justify-content: center; 
 }
 
 .input-group input, .input-group button {
-    flex-grow: 1; /* Allows input and button to fill available space */
-    max-width: 200px; /* Ensures they don’t stretch too much */
+    flex-grow: 1; 
+    max-width: 200px; 
 }
 
-/* Responsive Design Adjustments */
+
 @media (max-width: 768px) {
     .input-group {
-        flex-direction: column; /* Stacks input above button on smaller screens */
+        flex-direction: column; 
     }
 }
