@@ -12,12 +12,15 @@ CREATE TABLE User
     CONSTRAINT PK
 	  PRIMARY KEY (Id)
 );
+Select * from User ;
 
 CREATE TABLE subjects (
     subject_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     professor_id CHAR(6),
-    FOREIGN KEY (professor_id) REFERENCES User(Id)
+    student_id char(6),
+    FOREIGN KEY (professor_id) REFERENCES User(Id),
+    FOREIGN KEY (student_id) REFERENCES user(Id)
 );
 
 CREATE TABLE sections (

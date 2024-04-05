@@ -53,7 +53,7 @@ exports.loginPost = (req, res, next) => {
     })(req, res, next);
 };
 
-exports.welcome = (req, res) => {
+exports.welcome = async (req, res) => {
     if (!req.user) {
         return res.status(401).send('Unauthorized');
     }
@@ -63,7 +63,15 @@ exports.welcome = (req, res) => {
     }
 
     if (req.user.RoleOfUser === 'Student') {
-        res.render('student', { name: req.user.NameOfUser, layout: 'page' });
+        const studentId = req.user.Id;
+        const subjects = await query.getAllSubjects();
+        // Fetch available courses
+        const availableCourses = await query.getAvailableCourses(studentId);
+        // Fetch enrolled courses for the student
+        const enrolledCourses = await query.getEnrolledCourses(studentId);
+       // Render the student view with the user's name and enrolled/available courses
+        res.render('student', { name: req.user.NameOfUser, enrolledCourses, availableCourses,subjects ,  layout: 'page' });
+
     }
 
     if (req.user.RoleOfUser === 'Professor') {
@@ -294,4 +302,27 @@ exports.viewSubjectDetails = (req, res) => {
         // Render the subject details page with subject information
         res.render('subject', { name: subject[0].name });
     });
+}
+// Function to render student view with available subjects
+exports.viewAllSubjects = async (req, res) => {
+    try {
+        const subjects = await query.getAvailableCourses(studentId);
+        console.log(subjects);
+        res.render('student', { subjects, layout: 'page' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+exports.enrollSubject = async (req, res) => {
+    const studentId = req.user.Id;
+    const subjectId = req.params.subjectId;
+    try {
+        await query.enrollStudentInSubject(studentId, subjectId);
+        res.redirect('/welcome/'+studentId);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/controller');
+const controller = require('../controllers/controller');
 
 router.get('/', userController.index);
 router.get('/login', userController.login);
@@ -18,5 +19,8 @@ router.get('/welcome/:Id', userController.welcome);
 router.post('/welcome/:Id/createSubject', userController.createSubject);
 router.post('/welcome/:Id/deleteSubject/:subjectId', userController.deleteSubject);
 router.get('/subject/:subjectId', userController.viewSubjectDetails);
+router.get('/', userController.viewSubjectDetails);
+router.get('/student/:Id', userController.viewAllSubjects);
+router.post('/enroll/:subjectId', userController.enrollSubject); // Changed to POST method
 
 module.exports = router;

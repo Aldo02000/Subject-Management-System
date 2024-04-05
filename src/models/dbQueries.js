@@ -101,6 +101,52 @@ function updateUser(sql, values) {
     });
 }
 
+function getAllSubjects() {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM subjects', (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+function enrollStudentInSubject(studentId, subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE subjects SET student_id = ? WHERE subject_id = ?', [studentId, subjectId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getEnrolledCourses(studentId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM subjects WHERE student_id = ?', [studentId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getAvailableCourses(studentId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM subjects WHERE student_id IS NULL', (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
 module.exports = {
     findUsers,
     showUsers,
@@ -108,5 +154,9 @@ module.exports = {
     addUser,
     deleteUser,
     editUser,
-    updateUser
+    updateUser,
+    getAllSubjects,
+    getAvailableCourses,
+    getEnrolledCourses,
+    enrollStudentInSubject
 };
