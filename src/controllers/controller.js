@@ -70,7 +70,7 @@ exports.welcome = async (req, res) => {
         // Fetch enrolled courses for the student
         const enrolledCourses = await query.getEnrolledCourses(studentId);
        // Render the student view with the user's name and enrolled/available courses
-        res.render('student', { name: req.user.NameOfUser, enrolledCourses, availableCourses,subjects ,  layout: 'page' });
+        res.render('student', { name: req.user.NameOfUser, enrolledCourses, availableCourses,   layout: 'page' });
 
     }
 
@@ -326,3 +326,43 @@ exports.enrollSubject = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+exports.viewEnrolledCourses = async (req, res) => {
+    const studentId  = req.user.Id; // Assuming studentId is available in req.user
+    
+    try {
+        const enrolledCourses = await query.getEnrolledCourses(studentId);
+        res.redirect('enrolled_courses', { enrolledCourses });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+  exports.enrollStudent= async(req, res) => {
+    try {
+        // Check if the user is authenticated
+        if (!req.user) {
+            return res.status(401).send('Unauthorized');
+        }
+
+        // Check if user ID exists in req.user
+        if (!req.user.Id) {
+            return res.status(400).send('User ID is missing');
+        }
+
+        const subjectId = req.params.subjectId;
+        const studentId = req.user.Id;
+
+        // Proceed with enrollment logic
+        const isEnrolled = await query.isEnrolled(studentId, subjectId);
+        if (isEnrolled) {
+            return res.status(400).send('Student is already enrolled in this subject');
+        } else {
+            await query.enrollStudentInSubject(studentId, subjectId);
+            res.redirect('/welcome/' + studentId);
+        }
+    } catch (error) {
+        console.error('Error enrolling in subject:', error);
+        res.status(500).send('Error enrolling in subject');
+    }
+}

@@ -37,18 +37,11 @@
             <section class="enrolled-courses">
                 <h2>Enrolled Courses</h2>
                 <ul>
-<<<<<<< Updated upstream
-                  
-                    <li>Electrical Engineering 1</li>
-                    <li>Software Construction II</li>
-                    
-=======
                     {{#each enrolledCourses}}
                         <a href="/subject/{{this.subject_id}}">
                         <span>{{name}}</span>
                         </a>
                         {{/each}}
->>>>>>> Stashed changes
                 </ul>
             </section>
 
@@ -56,27 +49,7 @@
             <section class="available-courses">
                 <h2>Available Courses</h2>
                 <ul>
-<<<<<<< Updated upstream
-                   
-                    <li>
-                        <span>Electronics</span>
-                        <button class="enroll-btn">Enroll</button>
-                    </li>
-                    <li>
-                        <span>Software Engineering</span>
-                        <button class="enroll-btn">Enroll</button>
-                    </li>
-                    <li>
-                        <span>Electronics II</span>
-                        <button class="enroll-btn">Enroll</button>
-                    </li>
-                    <li>
-                        <span>Alogirthms and Data Structures</span>
-                        <button class="enroll-btn">Enroll</button>
-                    </li>
-                    
-=======
-                    {{#each subjects}}
+                    {{#each availableCourses}}
                     <li>
                         <span>{{name}}</span>
                         <form action="/enroll/{{subject_id}}" method="POST">
@@ -84,7 +57,6 @@
                         </form>
                   </li>
                     {{/each}}
->>>>>>> Stashed changes
                 </ul>
             </section>
         </div>

@@ -114,7 +114,7 @@ function getAllSubjects() {
 }
 function enrollStudentInSubject(studentId, subjectId) {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE subjects SET student_id = ? WHERE subject_id = ?', [studentId, subjectId], (err, results) => {
+        connection.query('INSERT INTO student_subject (student_id, subject_id) VALUES (?, ?)', [studentId, subjectId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -126,7 +126,7 @@ function enrollStudentInSubject(studentId, subjectId) {
 
 function getEnrolledCourses(studentId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM subjects WHERE student_id = ?', [studentId], (err, results) => {
+        connection.query('SELECT subjects.* FROM subjects JOIN student_subject ON subjects.subject_id = student_subject.subject_id WHERE student_subject.student_id = ?', [studentId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -138,11 +138,30 @@ function getEnrolledCourses(studentId) {
 
 function getAvailableCourses(studentId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM subjects WHERE student_id IS NULL', (err, results) => {
+        const sql = `
+            SELECT s.*
+            FROM subjects s
+            LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
+            WHERE ss.student_id IS NULL`;
+        
+        connection.query(sql, [studentId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
                 resolve(results);
+            }
+        });
+    });
+}
+function isEnrolled(studentId, subjectId) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM subjects WHERE student_id = ? AND subject_id = ?';
+        connection.query(sql, [studentId, subjectId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                // If the query returns any results, the student is enrolled; otherwise, they're not enrolled
+                resolve(results.length > 0);
             }
         });
     });
@@ -158,5 +177,6 @@ module.exports = {
     getAllSubjects,
     getAvailableCourses,
     getEnrolledCourses,
-    enrollStudentInSubject
+    enrollStudentInSubject,
+    isEnrolled
 };

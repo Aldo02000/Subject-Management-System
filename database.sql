@@ -10,7 +10,7 @@ CREATE TABLE User
     AccountPassword VARCHAR(100) NOT NULL,
     RoleOfUser VARCHAR(10) NOT NULL,
     CONSTRAINT PK
-	  PRIMARY KEY (Id)
+	 PRIMARY KEY (Id)
 );
 Select * from User ;
 
@@ -19,8 +19,13 @@ CREATE TABLE subjects (
     name VARCHAR(255) NOT NULL,
     professor_id CHAR(6),
     student_id char(6),
-    FOREIGN KEY (professor_id) REFERENCES User(Id),
-    FOREIGN KEY (student_id) REFERENCES user(Id)
+    FOREIGN KEY (professor_id) REFERENCES User(Id)
+);
+CREATE TABLE student_subject (
+    student_id CHAR(6),
+    subject_id INT,
+    FOREIGN KEY (student_id) REFERENCES User(Id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
 );
 
 CREATE TABLE sections (

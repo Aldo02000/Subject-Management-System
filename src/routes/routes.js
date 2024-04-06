@@ -21,6 +21,7 @@ router.post('/welcome/:Id/deleteSubject/:subjectId', userController.deleteSubjec
 router.get('/subject/:subjectId', userController.viewSubjectDetails);
 router.get('/', userController.viewSubjectDetails);
 router.get('/student/:Id', userController.viewAllSubjects);
-router.post('/enroll/:subjectId', userController.enrollSubject); // Changed to POST method
+router.get('/subjects', controller.viewAllSubjects);
+router.post('/enroll/:subjectId', userController.enrollStudent); // Changed to POST method
 
 module.exports = router;
