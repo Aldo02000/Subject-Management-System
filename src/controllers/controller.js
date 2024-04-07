@@ -69,8 +69,8 @@ exports.welcome = async (req, res) => {
         const availableCourses = await query.getAvailableCourses(studentId);
         // Fetch enrolled courses for the student
         const enrolledCourses = await query.getEnrolledCourses(studentId);
-       // Render the student view with the user's name and enrolled/available courses
-        res.render('student', { name: req.user.NameOfUser, enrolledCourses, availableCourses,   layout: 'page' });
+        // Render the student view with the user's name and enrolled/available courses
+        res.render('student', { name: req.user.NameOfUser, enrolledCourses, availableCourses, layout: 'page' });
 
     }
 
@@ -233,18 +233,6 @@ exports.edituserPost = async (req, res) => {
             sql += ' WHERE Id = ?';
             values.push(req.params.ID);
 
-
-            // if (ID) {
-            //     sql += ' Id = ?';
-            //     values.push(ID);
-            //     sql += ' WHERE Id = ?';
-            //     values.push(req.params.ID);
-            // } else {
-            //     sql = sql.slice(0, -1); // Remove trailing comma
-            //     sql += ' WHERE Id = ?';
-            //     values.push(req.params.ID);
-            // }
-
             try {
                 await query.updateUser(sql, values);
                 res.render('editUser', { success: 'User updated successfully', layout: 'admin' })
@@ -282,7 +270,7 @@ exports.createSubject = (req, res) => {
 
 exports.deleteSubject = (req, res) => {
     const { Id, subjectId } = req.params;
-    
+
 
     // Delete the subject from the database
     db.query('DELETE FROM subjects WHERE subject_id = ?', [subjectId], (err, result) => {
@@ -292,17 +280,17 @@ exports.deleteSubject = (req, res) => {
     });
 }
 
-exports.viewSubjectDetails = (req, res) => {
-    const { subjectId } = req.params;
+exports.viewEnrolledCourses = async (req, res) => {
+    const studentId = req.user.Id; // Assuming studentId is available in req.user
 
-    // Fetch subject details from the database
-    db.query('SELECT * FROM subjects WHERE subject_id = ?', [subjectId], (err, subject) => {
-        if (err) throw err;
+    try {
+        const enrolledCourses = await query.getEnrolledCourses(studentId);
+        res.redirect('enrolled_courses', { enrolledCourses });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
 
-        // Render the subject details page with subject information
-        res.render('subject', { name: subject[0].name });
-    });
-}
 // Function to render student view with available subjects
 exports.viewAllSubjects = async (req, res) => {
     try {
@@ -320,7 +308,7 @@ exports.enrollSubject = async (req, res) => {
     const subjectId = req.params.subjectId;
     try {
         await query.enrollStudentInSubject(studentId, subjectId);
-        res.redirect('/welcome/'+studentId);
+        res.redirect('/welcome/' + studentId);
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -328,8 +316,8 @@ exports.enrollSubject = async (req, res) => {
 };
 
 exports.viewEnrolledCourses = async (req, res) => {
-    const studentId  = req.user.Id; // Assuming studentId is available in req.user
-    
+    const studentId = req.user.Id; // Assuming studentId is available in req.user
+
     try {
         const enrolledCourses = await query.getEnrolledCourses(studentId);
         res.redirect('enrolled_courses', { enrolledCourses });
@@ -338,7 +326,7 @@ exports.viewEnrolledCourses = async (req, res) => {
     }
 };
 
-  exports.enrollStudent= async(req, res) => {
+exports.enrollStudent = async (req, res) => {
     try {
         // Check if the user is authenticated
         if (!req.user) {
@@ -366,3 +354,20 @@ exports.viewEnrolledCourses = async (req, res) => {
         res.status(500).send('Error enrolling in subject');
     }
 }
+
+exports.searchSubject = (req, res) => {
+    const searchTerm = req.query.term;
+    const professorId = req.params.Id;
+
+    const sqlQuery = `SELECT * FROM subjects WHERE name LIKE '%${searchTerm}%'`;
+
+    db.query(sqlQuery, (err, results) => {
+        if (err) {
+            console.error('Error executing SQL query:', err);
+            res.status(500).json({ error: 'An error occurred while searching for subjects' });
+            return;
+        }
+
+        res.render('subjectSearch', { subjects: results, professorId });
+    });
+};

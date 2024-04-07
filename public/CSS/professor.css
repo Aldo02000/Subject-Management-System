@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     background: #edf1f7;
@@ -11,12 +12,26 @@ body, html {
     min-height: 100vh;
 }
 
+#createSubjectButton {
+    border-radius: 9px;
+}
+
+#createSubjectText {
+    margin-right: auto;
+    width: 100%;
+    margin-top: 30px;
+}
+
 /* sidebar styling and feature implementation */
 .sidebar {
     width: 250px;
-    background: #0047AB; 
+    background: #0047AB;
     color: #ecf0f1;
     padding: 20px;
+}
+
+.new-subject {
+    display: flex;
 }
 
 .sidebar .logo {
@@ -34,22 +49,24 @@ body, html {
 
 .menu-items li a {
     text-decoration: none;
-    color: inherit; /* inheriting test color */
+    color: inherit;
+    /* inheriting test color */
     display: block;
-    transition: padding-left 0.3s, background-color 0.3s; /* adding hover effect */
+    transition: padding-left 0.3s, background-color 0.3s;
+    /* adding hover effect */
 }
 
 .menu-items li a:hover {
-    background-color: #34495e; 
-    padding-left: 24px; 
-    border-left: 4px solid #f39c12; 
+    background-color: #34495e;
+    padding-left: 24px;
+    border-left: 4px solid #f39c12;
 }
 
 /* logout features and design */
 .logout-section {
     padding: 20px;
     text-align: center;
-    border-top: 1px solid #34495e; 
+    border-top: 1px solid #34495e;
 }
 
 .logout-section span {
@@ -59,7 +76,7 @@ body, html {
 
 .logout-section button {
     padding: 10px 20px;
-    background-color: #e74c3c; 
+    background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 4px;
@@ -68,15 +85,15 @@ body, html {
 }
 
 .logout-section button:hover {
-    background-color: #c0392b; 
+    background-color: #c0392b;
 }
 
 /* this code is for the main content of the page */
 .main-content {
     flex: 1;
     padding: 40px;
-    background: #ffffff; 
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05); 
+    background: #ffffff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
 
 .header {
@@ -89,7 +106,7 @@ body, html {
 .header h1 {
     margin: 0;
     font-size: 24px;
-    color: #2c3e50; 
+    color: #2c3e50;
 }
 
 .search-bar {
@@ -101,14 +118,19 @@ body, html {
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    flex-grow: 1; 
+    flex-grow: 1;
+    position: absolute;
+    right: 110px;
 }
 
 .search-bar button {
     padding: 10px;
-    background: none;
     border: none;
-    cursor: pointer;
+    position: absolute;
+    right: 42px;
+    background-color: #0047AB;
+    border-radius: 9px;
+    color: white;
 }
 
 .user-profile {
@@ -119,23 +141,35 @@ body, html {
 .user-profile img {
     border-radius: 50%;
     margin-right: 10px;
-    width: 50px; 
+    width: 50px;
 }
 
 .user-profile span {
     font-weight: bold;
 }
 
+.searchSection {
+    display: flex;
+}
+
+#searchForm {
+    position: relative;
+    right: 10px;
+}
+
+
 /* create new subject features */
-.new-subject h2, .subjects-list h2 {   
+.new-subject h2,
+.subjects-list h2 {
     margin-bottom: 30px;
-    color: #0047AB; 
+    color: #0047AB;
     font-size: 20px;
 }
 
 .input-group {
     display: flex;
     margin-top: 10px;
+    height: 50px;
 }
 
 .input-group input {
@@ -148,17 +182,18 @@ body, html {
 
 .input-group button {
     padding: 10px 20px;
-    background-color: #0047AB; 
+    background-color: #0047AB;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s; 
+    transition: background-color 0.3s;
 }
 
 .input-group button:hover {
-    background-color: #0047AB; 
+    background-color: #0047AB;
 }
+
 
 
 
@@ -177,8 +212,8 @@ body, html {
     background: #fff;
     border-radius: 10px;
     padding: 20px;
-    width: calc(50% - 20px); 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: calc(50% - 20px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: left;
     justify-content: space-between;
@@ -187,8 +222,8 @@ body, html {
 /* image can be added to the subjects, selecting a generic image */
 .subject-card img {
     border-radius: 50%;
-    width: 50px; 
-    height: 50px; 
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     margin-right: 20px;
 }
@@ -200,7 +235,7 @@ body, html {
 
 .subject-card button {
     padding: 5px 10px;
-    background-color: #ff4d4f; 
+    background-color: #ff4d4f;
     color: white;
     border: none;
     border-radius: 4px;
@@ -209,28 +244,28 @@ body, html {
 }
 
 .subject-card button:hover {
-    background-color: #cc0000; 
+    background-color: #cc0000;
 }
 
 /* remove additional space */
 
 .subject-card:first-child {
-    margin-top: 0; 
+    margin-top: 0;
 }
 
 /* delete button: red */
 .delete-btn {
-    padding: 10px 15px; 
-    background-color: #d9534f; 
-    color: white; 
-    border: none; 
-    border-radius: 4px; 
-    cursor: pointer; 
-    transition: background-color 0.2s ease; 
+    padding: 10px 15px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .delete-btn:hover {
-    background-color: #c9302c; 
+    background-color: #c9302c;
 }
 
 
@@ -260,47 +295,48 @@ body, html {
 }
 
 .logout-button {
-    display: inline-block; 
+    display: inline-block;
     padding: 10px 20px;
     background-color: #e74c3c;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    text-decoration: none; 
+    text-decoration: none;
     text-align: center;
-    transition: background-color 0.3s; 
+    transition: background-color 0.3s;
 }
 
 .logout-button:hover {
-    background-color: #c0392b; 
+    background-color: #c0392b;
 }
 
 /* padding, spacing and border radius settings*/
-.main-content > section {
-    margin-bottom: 30px; 
-    border: 1px solid #d3d3d3; 
-    padding: 20px; 
-    border-radius: 5px; 
-    background-color: #ffffff; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+.main-content>section {
+    margin-bottom: 30px;
+    border: 1px solid #d3d3d3;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .input-group {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: 10px;
-    justify-content: center; 
+    justify-content: center;
 }
 
-.input-group input, .input-group button {
-    flex-grow: 1; 
-    max-width: 200px; 
+.input-group input,
+.input-group button {
+    flex-grow: 1;
+    max-width: 200px;
 }
 
 
 @media (max-width: 768px) {
     .input-group {
-        flex-direction: column; 
+        flex-direction: column;
     }
 }

@@ -1,4 +1,4 @@
-
+DROP DATABASE SubjectSystem;
 CREATE DATABASE SubjectSystem;
 USE SubjectSystem;
 

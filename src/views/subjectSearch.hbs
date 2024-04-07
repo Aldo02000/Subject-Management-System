@@ -13,30 +13,11 @@
     <div class="wrapper">
         {{> sidebar dashboardLink="#" coursesText="Class Schedule" scheduleText="Setting" examsText=""}}
         <div class="main-content">
-
-
-            <h1>Hi {{name}}</h1>
-
-            <section class="new-subject">
-                <h2 id="createSubjectText">Create a new subject</h2>
-                <form action="welcome/{{professorId}}/createSubject" method="POST" class="input-group">
-                    <input type="hidden" name="professorId" value="{{ professor.id }}">
-                    <input type="text" name="name" placeholder="Enter subject name" required>
-                    <button type="submit" id="createSubjectButton">Create Now</button>
-                </form>
-            </section>
-
-            <section class="new-subject">
-                <h2 id="createSubjectText">Search for a subject</h2>
-                <form action="/welcome/{{professorId}}/search" method="GET" class="input-group">
-                    <input type="text" name="term" placeholder="Enter subject name">
-                    <button type="submit" id="createSubjectButton">Search</button>
-                </form>
-            </section>
+            <!-- other content specific to this page -->
 
             <!-- subjects List -->
             <section class="subjects-list">
-                <h2>Your Subjects</h2>
+                <h2>Search Results</h2>
                 {{#each subjects}}
                 <div class="subject-card">
 

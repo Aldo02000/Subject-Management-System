@@ -18,10 +18,11 @@ router.post('/addSection', userController.addSection);
 router.get('/welcome/:Id', userController.welcome);
 router.post('/welcome/:Id/createSubject', userController.createSubject);
 router.post('/welcome/:Id/deleteSubject/:subjectId', userController.deleteSubject);
-router.get('/subject/:subjectId', userController.viewSubjectDetails);
-router.get('/', userController.viewSubjectDetails);
+// router.get('/subject/:subjectId', userController.viewSubjectDetails);
+// router.get('/', userController.viewSubjectDetails);
 router.get('/student/:Id', userController.viewAllSubjects);
 router.get('/subjects', controller.viewAllSubjects);
 router.post('/enroll/:subjectId', userController.enrollStudent); // Changed to POST method
+router.get('/welcome/:Id/search', userController.searchSubject);
 
 module.exports = router;

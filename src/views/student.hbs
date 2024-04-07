@@ -1,67 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subject Description - Mathematics</title>
     <base href="/">
     <link rel="stylesheet" type="text/css" href="CSS/student.css" />
-    <script src="../page.js"></script> 
 </head>
 <body>
     <div class="wrapper">
-        
-        <nav class="sidebar">
-            <div class="logo">STUMA</div>
-            <ul class="menu-items">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="students.html">My Courses</a></li>
-                <li>Schedule</li>
-                 <li>Exams</li>
-
-               
-            </ul>
-            <div class="logout-section">
-    <a href="/logout" class="logout-button">Logout</a>
-</div>
-        </nav>
-
-      
+        {{> sidebar coursesText="My Courses" scheduleText="" examsText=""}}
         <div class="main-content">
-            
-            <header class="top-nav">
-                <span class="portal-text">Student Portal</span>
-            </header>
-               <div class="search-bar">
-                    <input type="text" placeholder="Search">
-                    <button>🔍</button>
-                </div>
-            
-            <section class="enrolled-courses">
-                <h2>Enrolled Courses</h2>
-                <ul>
-                    {{#each enrolledCourses}}
-                        <a href="/subject/{{this.subject_id}}">
-                        <span>{{name}}</span>
-                        </a>
-                        {{/each}}
-                </ul>
-            </section>
-
-           
-            <section class="available-courses">
-                <h2>Available Courses</h2>
-                <ul>
-                    {{#each availableCourses}}
-                    <li>
-                        <span>{{name}}</span>
-                        <form action="/enroll/{{subject_id}}" method="POST">
-                            <button type="submit" class="enroll-btn">Enroll</button>
-                        </form>
-                  </li>
-                    {{/each}}
-                </ul>
-            </section>
+            {{> header greeting="Student Portal" searchAction="#" searchPlaceholder="Search" profileImage="https://via.placeholder.com/150" userName=""}}
+            <!-- other content specific to this page -->
         </div>
     </div>
 </body>
