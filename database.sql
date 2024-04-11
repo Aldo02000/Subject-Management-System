@@ -18,7 +18,7 @@ CREATE TABLE subjects (
     subject_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     professor_id CHAR(6),
-    student_id char(6),
+    student_id CHAR(6),
     FOREIGN KEY (professor_id) REFERENCES User(Id)
 );
 CREATE TABLE student_subject (

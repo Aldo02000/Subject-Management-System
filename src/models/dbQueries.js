@@ -112,6 +112,7 @@ function getAllSubjects() {
         });
     });
 }
+
 function enrollStudentInSubject(studentId, subjectId) {
     return new Promise((resolve, reject) => {
         connection.query('INSERT INTO student_subject (student_id, subject_id) VALUES (?, ?)', [studentId, subjectId], (err, results) => {
@@ -126,7 +127,7 @@ function enrollStudentInSubject(studentId, subjectId) {
 
 function getEnrolledCourses(studentId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT subjects.* FROM subjects JOIN student_subject ON subjects.subject_id = student_subject.subject_id WHERE student_subject.student_id = ?', [studentId], (err, results) => {
+        connection.query('SELECT * FROM subjects JOIN student_subject ON subjects.subject_id = student_subject.subject_id WHERE student_subject.student_id = ?', [studentId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -143,7 +144,7 @@ function getAvailableCourses(studentId) {
             FROM subjects s
             LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
             WHERE ss.student_id IS NULL`;
-        
+
         connection.query(sql, [studentId], (err, results) => {
             if (err) {
                 reject(err);
@@ -153,6 +154,7 @@ function getAvailableCourses(studentId) {
         });
     });
 }
+
 function isEnrolled(studentId, subjectId) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM subjects WHERE student_id = ? AND subject_id = ?';
@@ -166,6 +168,7 @@ function isEnrolled(studentId, subjectId) {
         });
     });
 }
+
 module.exports = {
     findUsers,
     showUsers,

@@ -2,7 +2,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const query = require('../models/dbQueries')
 const db = require('../models/dbConnection');
-const { customAlphabet } = require('nanoid');
+const {customAlphabet} = require('nanoid');
 const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
 function isAdmin(req, res, next) {
@@ -20,11 +20,11 @@ function isAdmin(req, res, next) {
 }
 
 exports.index = (req, res) => {
-    res.render('index', { layout: 'main' });
+    res.render('index', {layout: 'main'});
 }
 
 exports.login = (req, res) => {
-    res.render('login', { message: req.flash('error'), layout: 'main' });
+    res.render('login', {message: req.flash('error'), layout: 'main'});
 }
 
 exports.loginPost = (req, res, next) => {
@@ -70,7 +70,7 @@ exports.welcome = async (req, res) => {
         // Fetch enrolled courses for the student
         const enrolledCourses = await query.getEnrolledCourses(studentId);
         // Render the student view with the user's name and enrolled/available courses
-        res.render('student', { name: req.user.NameOfUser, enrolledCourses, availableCourses, layout: 'page' });
+        res.render('student', {name: req.user.NameOfUser, enrolledCourses, availableCourses, layout: 'page'});
 
     }
 
@@ -80,13 +80,13 @@ exports.welcome = async (req, res) => {
         db.query('SELECT * FROM subjects WHERE professor_id = ?', [professorId], (err, subjects) => {
             if (err) throw err;
 
-            res.render('professor', { name: req.user.NameOfUser, professorId, subjects, layout: 'page' });
+            res.render('professor', {name: req.user.NameOfUser, professorId, subjects, layout: 'page'});
         });
     }
 };
 
 exports.addSection = (req, res) => {
-    res.json({ success: true });
+    res.json({success: true});
 }
 
 
@@ -94,7 +94,7 @@ exports.find = async (req, res, next) => {
     try {
         let searchTerm = req.body.search;
         const results = await query.findUsers(searchTerm);
-        res.render('home', { results, layout: 'admin' });
+        res.render('home', {results, layout: 'admin'});
     } catch (error) {
         console.error(error);
         next(error);
@@ -109,7 +109,7 @@ exports.admin = async (req, res, next) => {
 
     try {
         const results = await query.showUsers();
-        res.render('home', { results, layout: 'admin' });
+        res.render('home', {results, layout: 'admin'});
     } catch (error) {
         console.error(error);
         next(error);
@@ -121,11 +121,11 @@ exports.logout = (req, res) => {
 }
 
 exports.adduser = (req, res) => {
-    res.render('addUser', { layout: 'admin' });
+    res.render('addUser', {layout: 'admin'});
 }
 
 exports.adduserPost = async (req, res) => {
-    const { fullName, email, password, role } = req.body;
+    const {fullName, email, password, role} = req.body;
 
     const generateID = customAlphabet(alphabet, 6);
     const uniqueID = generateID();
@@ -166,7 +166,7 @@ exports.adduserPost = async (req, res) => {
         }
 
         await query.addUser(uniqueID, fullName, email, password, role);
-        res.render('addUser', { success: 'User added successfully', layout: 'admin' });
+        res.render('addUser', {success: 'User added successfully', layout: 'admin'});
     } catch (error) {
         console.error(error);
         res.render('addUser', {
@@ -183,7 +183,7 @@ exports.edituser = async (req, res) => {
 
     try {
         const results = await query.editUser(req.params.ID);
-        res.render('editUser', { layout: 'admin', results })
+        res.render('editUser', {layout: 'admin', results})
     } catch (error) {
         console.error(error);
         next(error);
@@ -191,7 +191,7 @@ exports.edituser = async (req, res) => {
 }
 
 exports.edituserPost = async (req, res) => {
-    const { fullName, email, password, role } = req.body;
+    const {fullName, email, password, role} = req.body;
     const saltRounds = 10;
 
     const results = await query.editUser(req.params.ID);
@@ -235,10 +235,10 @@ exports.edituserPost = async (req, res) => {
 
             try {
                 await query.updateUser(sql, values);
-                res.render('editUser', { success: 'User updated successfully', layout: 'admin' })
+                res.render('editUser', {success: 'User updated successfully', layout: 'admin'})
             } catch (error) {
                 console.error(error);
-                return res.render('editUser', { error: 'Something went wrong', layout: 'admin' });
+                return res.render('editUser', {error: 'Something went wrong', layout: 'admin'});
             }
         });
     });
@@ -256,7 +256,7 @@ exports.delete = async (req, res) => {
 }
 
 exports.createSubject = (req, res) => {
-    const { name } = req.body;
+    const {name} = req.body;
     const professorId = req.params.Id; // Assuming the professor's ID is passed in the URL parameter
 
     // Insert new subject into the database
@@ -269,7 +269,7 @@ exports.createSubject = (req, res) => {
 }
 
 exports.deleteSubject = (req, res) => {
-    const { Id, subjectId } = req.params;
+    const {Id, subjectId} = req.params;
 
 
     // Delete the subject from the database
@@ -280,23 +280,24 @@ exports.deleteSubject = (req, res) => {
     });
 }
 
-exports.viewEnrolledCourses = async (req, res) => {
-    const studentId = req.user.Id; // Assuming studentId is available in req.user
+// exports.viewEnrolledCourses = async (req, res) => {
+//     const studentId = req.user.Id; // Assuming studentId is available in req.user
 
-    try {
-        const enrolledCourses = await query.getEnrolledCourses(studentId);
-        res.redirect('enrolled_courses', { enrolledCourses });
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
+//     try {
+//         const enrolledCourses = await query.getEnrolledCourses(studentId);
+//         res.redirect('enrolled_courses', { enrolledCourses });
+//     } catch (error) {
+//         res.status(500).send(error.message);
+//     }
+// };
+
 
 // Function to render student view with available subjects
 exports.viewAllSubjects = async (req, res) => {
     try {
         const subjects = await query.getAvailableCourses(studentId);
         console.log(subjects);
-        res.render('student', { subjects, layout: 'page' });
+        res.render('student', {subjects, layout: 'page'});
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -320,7 +321,7 @@ exports.viewEnrolledCourses = async (req, res) => {
 
     try {
         const enrolledCourses = await query.getEnrolledCourses(studentId);
-        res.redirect('enrolled_courses', { enrolledCourses });
+        res.redirect('enrolled_courses', {enrolledCourses});
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -364,10 +365,22 @@ exports.searchSubject = (req, res) => {
     db.query(sqlQuery, (err, results) => {
         if (err) {
             console.error('Error executing SQL query:', err);
-            res.status(500).json({ error: 'An error occurred while searching for subjects' });
+            res.status(500).json({error: 'An error occurred while searching for subjects'});
             return;
         }
 
-        res.render('subjectSearch', { subjects: results, professorId });
+        res.render('subjectSearch', {subjects: results, professorId});
+    });
+};
+
+
+exports.viewSubjectDetails = (req, res) => {
+    const {Id, subjectId} = req.params;
+
+    db.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, Id], (err, subject) => {
+        if (err) throw err;
+
+        // Render the subject details page with subject information
+        res.render('subject', {});
     });
 };
