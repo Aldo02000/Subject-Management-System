@@ -169,6 +169,45 @@ function isEnrolled(studentId, subjectId) {
     });
 }
 
+function getEnrolledCoursesBySearch(studentId, searchTerm) {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT * FROM subjects
+            JOIN student_subject ON subjects.subject_id = student_subject.subject_id
+            WHERE student_subject.student_id = ? AND subjects.name LIKE ?`;
+
+        const searchTermWithWildcards = `%${searchTerm}%`;
+
+        connection.query(sql, [studentId, searchTermWithWildcards], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getAvailableCoursesBySearch(studentId, searchTerm) {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT s.*
+            FROM subjects s
+            LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
+            WHERE ss.student_id IS NULL AND s.name LIKE ?`;
+
+        const searchTermWithWildcards = `%${searchTerm}%`;
+
+        connection.query(sql, [studentId, searchTermWithWildcards], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
 module.exports = {
     findUsers,
     showUsers,
@@ -181,5 +220,7 @@ module.exports = {
     getAvailableCourses,
     getEnrolledCourses,
     enrollStudentInSubject,
-    isEnrolled
+    isEnrolled,
+    getEnrolledCoursesBySearch,
+    getAvailableCoursesBySearch
 };

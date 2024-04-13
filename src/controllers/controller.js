@@ -64,13 +64,13 @@ exports.welcome = async (req, res) => {
 
     if (req.user.RoleOfUser === 'Student') {
         const studentId = req.user.Id;
-        const subjects = await query.getAllSubjects();
+        // const subjects = await query.getAllSubjects();
         // Fetch available courses
         const availableCourses = await query.getAvailableCourses(studentId);
         // Fetch enrolled courses for the student
         const enrolledCourses = await query.getEnrolledCourses(studentId);
         // Render the student view with the user's name and enrolled/available courses
-        res.render('student', {name: req.user.NameOfUser, enrolledCourses, availableCourses, layout: 'page'});
+        res.render('student', {name: req.user.NameOfUser, studentId, enrolledCourses, availableCourses, layout: 'page'});
 
     }
 
@@ -273,23 +273,21 @@ exports.deleteSubject = (req, res) => {
 
 
     // Delete the subject from the database
+    db.query('DELETE FROM student_subject WHERE subject_id = ?', [subjectId], (err, result) => {
+        if (err) throw err;
+    });
+
+    db.query('DELETE FROM professor_subject WHERE subject_id = ?', [subjectId], (err, result) => {
+        if (err) throw err;
+    });
+
     db.query('DELETE FROM subjects WHERE subject_id = ?', [subjectId], (err, result) => {
         if (err) throw err;
         // Redirect back to the welcome page after deletion
         res.redirect(`/welcome/${Id}`);
     });
+
 }
-
-// exports.viewEnrolledCourses = async (req, res) => {
-//     const studentId = req.user.Id; // Assuming studentId is available in req.user
-
-//     try {
-//         const enrolledCourses = await query.getEnrolledCourses(studentId);
-//         res.redirect('enrolled_courses', { enrolledCourses });
-//     } catch (error) {
-//         res.status(500).send(error.message);
-//     }
-// };
 
 
 // Function to render student view with available subjects
@@ -304,17 +302,17 @@ exports.viewAllSubjects = async (req, res) => {
     }
 };
 
-exports.enrollSubject = async (req, res) => {
-    const studentId = req.user.Id;
-    const subjectId = req.params.subjectId;
-    try {
-        await query.enrollStudentInSubject(studentId, subjectId);
-        res.redirect('/welcome/' + studentId);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
-};
+// exports.enrollSubject = async (req, res) => {
+//     const studentId = req.user.Id;
+//     const subjectId = req.params.subjectId;
+//     try {
+//         await query.enrollStudentInSubject(studentId, subjectId);
+//         res.redirect('/welcome/' + studentId);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
 
 exports.viewEnrolledCourses = async (req, res) => {
     const studentId = req.user.Id; // Assuming studentId is available in req.user
@@ -356,31 +354,41 @@ exports.enrollStudent = async (req, res) => {
     }
 }
 
-exports.searchSubject = (req, res) => {
+exports.searchSubject = async (req, res) => {
     const searchTerm = req.query.term;
-    const professorId = req.params.Id;
+    const studentId = req.params.Id;
 
-    const sqlQuery = `SELECT * FROM subjects WHERE name LIKE '%${searchTerm}%'`;
-
-    db.query(sqlQuery, (err, results) => {
-        if (err) {
-            console.error('Error executing SQL query:', err);
-            res.status(500).json({error: 'An error occurred while searching for subjects'});
-            return;
-        }
-
-        res.render('subjectSearch', {subjects: results, professorId});
-    });
+    try {
+        const enrolledCourses = await query.getEnrolledCoursesBySearch(studentId, searchTerm);
+        const availableCourses = await query.getAvailableCoursesBySearch(studentId, searchTerm);
+        res.render('subjectSearch', {enrolledCourses, availableCourses });
+    } catch (err) {
+        console.error('Error searching for subjects:', err);
+        res.status(500).json({ error: 'An error occurred while searching for subjects' });
+    }
 };
 
 
 exports.viewSubjectDetails = (req, res) => {
     const {Id, subjectId} = req.params;
 
-    db.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, Id], (err, subject) => {
-        if (err) throw err;
+    if (req.user.RoleOfUser === 'Student') {
+        db.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, Id], (err, subject) => {
+            if (err) throw err;
 
-        // Render the subject details page with subject information
-        res.render('subject', {});
-    });
+            // Render the subject details page with subject information
+            res.render('subject', {});
+        });
+    }
+
+    if (req.user.RoleOfUser === 'Professor') {
+        db.query('SELECT * FROM professor_subject WHERE subject_id = ? AND professor_id = ?', [subjectId, Id], (err, subject) => {
+            if (err) throw err;
+
+            // Render the subject details page with subject information
+            res.render('subject', {});
+        });
+    }
+
+
 };

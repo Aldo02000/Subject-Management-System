@@ -12,7 +12,6 @@ CREATE TABLE User
     CONSTRAINT PK
 	 PRIMARY KEY (Id)
 );
-Select * from User ;
 
 CREATE TABLE subjects (
     subject_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,10 +20,18 @@ CREATE TABLE subjects (
     student_id CHAR(6),
     FOREIGN KEY (professor_id) REFERENCES User(Id)
 );
+
 CREATE TABLE student_subject (
     student_id CHAR(6),
     subject_id INT,
     FOREIGN KEY (student_id) REFERENCES User(Id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
+
+CREATE TABLE professor_subject (
+    professor_id CHAR(6),
+    subject_id INT,
+    FOREIGN KEY (professor_id) REFERENCES User(Id),
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
 );
 

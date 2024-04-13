@@ -14,13 +14,13 @@
         {{> sidebar coursesText="My Courses" scheduleText="" examsText=""}}
         <div class="main-content">
 
-            <header class="top-nav">
-                <span class="portal-text">Student Portal</span>
-            </header>
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button>🔍</button>
-            </div>
+            <section class="new-subject">
+                <header><h2 id="subjectHeader">Search for a subject</h2></header>
+                <form action="/welcome/{{studentId}}/search" method="GET" class="input-group">
+                    <input type="text" name="term" placeholder="Enter subject name">
+                    <button type="submit" id="searchSubjectButton"><span>Search</span></button>
+                </form>
+            </section>
 
             <section class="enrolled-courses">
                 <h2>Enrolled Courses</h2>
@@ -28,7 +28,7 @@
                     {{#each enrolledCourses}}
                     <p>{{this.Id}}</p>
                     <a href="/welcome/{{this.student_id}}/subject/{{ this.subject_id }}">
-                        <span>{{name}}</span>
+                        <button type="submit" id="searchSubjectButton"><span>{{name}}</span></button>
                     </a>
                     {{/each}}
                 </ul>
