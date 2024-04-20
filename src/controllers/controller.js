@@ -70,7 +70,13 @@ exports.welcome = async (req, res) => {
         // Fetch enrolled courses for the student
         const enrolledCourses = await query.getEnrolledCourses(studentId);
         // Render the student view with the user's name and enrolled/available courses
-        res.render('student', {name: req.user.NameOfUser, studentId, enrolledCourses, availableCourses, layout: 'page'});
+        res.render('student', {
+            name: req.user.NameOfUser,
+            studentId,
+            enrolledCourses,
+            availableCourses,
+            layout: 'page'
+        });
 
     }
 
@@ -361,34 +367,61 @@ exports.searchSubject = async (req, res) => {
     try {
         const enrolledCourses = await query.getEnrolledCoursesBySearch(studentId, searchTerm);
         const availableCourses = await query.getAvailableCoursesBySearch(studentId, searchTerm);
-        res.render('subjectSearch', {enrolledCourses, availableCourses });
+        res.render('subjectSearch', {enrolledCourses, availableCourses});
     } catch (err) {
         console.error('Error searching for subjects:', err);
-        res.status(500).json({ error: 'An error occurred while searching for subjects' });
+        res.status(500).json({error: 'An error occurred while searching for subjects'});
     }
 };
 
 
-exports.viewSubjectDetails = (req, res) => {
+exports.viewSubjectDetails = async (req, res) => {
     const {Id, subjectId} = req.params;
+    let descriptionLine;
 
     if (req.user.RoleOfUser === 'Student') {
         db.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, Id], (err, subject) => {
             if (err) throw err;
 
             // Render the subject details page with subject information
-            res.render('subject', {});
+            res.render('subject', {Id, description});
         });
     }
 
     if (req.user.RoleOfUser === 'Professor') {
-        db.query('SELECT * FROM professor_subject WHERE subject_id = ? AND professor_id = ?', [subjectId, Id], (err, subject) => {
-            if (err) throw err;
+        const isProfessor = true;
 
-            // Render the subject details page with subject information
-            res.render('subject', {});
-        });
+        try {
+            const [descriptionRows] = await query.getDescription(subjectId);
+
+            if (descriptionRows === undefined) {
+                const initialText = 'Initial description text';
+                await query.insertFirstDescription(subjectId, initialText);
+                descriptionLine = initialText;
+            } else {
+                descriptionLine = descriptionRows.description;
+            }
+
+            await query.selectSubjectInProfessor(subjectId, Id);
+
+            res.render('subject', {Id, isProfessor, subjectId, descriptionText: descriptionLine});
+
+        }  catch (error) {
+            console.error('Error retrieving description:', error);
+            throw new Error('Failed to retrieve description from the database');
+        }
+
+
     }
+};
 
+exports.editSubjectDescription = async (req, res) => {
+    // Check if description already exists for the subject
+    const {subjectId} = req.params;
+
+    await query.updateDescription(req.body.description, subjectId);
+
+    // Redirect back to the subject details page
+    res.redirect(`/welcome/${req.params.Id}/subject/${req.params.subjectId}`);
 
 };

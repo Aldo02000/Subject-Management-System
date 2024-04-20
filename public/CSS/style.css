@@ -102,6 +102,10 @@ footer a:hover {
   }
 }
 
+#errorMessage {
+  color: #ff0000;
+}
+
 
 
 

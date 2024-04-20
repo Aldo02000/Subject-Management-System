@@ -11,7 +11,7 @@
 
 <body>
     <div class="wrapper">
-        {{> sidebar dashboardLink="#" coursesText="Class Schedule" scheduleText="Setting" examsText=""}}
+        {{> sidebar dashboardLink=(concat '/welcome/' professorId) coursesText="Class Schedule" scheduleText="Setting" examsText="asdas"}}
         <div class="main-content">
 
 
@@ -25,14 +25,6 @@
                     <button type="submit" id="createSubjectButton"><span>Create Now<span/></button>
                 </form>
             </section>
-
-<!--            <section class="new-subject">-->
-<!--                <header><h2 id="subjectHeader">Search for a subject</h2></header>-->
-<!--                <form action="/welcome/{{professorId}}/search" method="GET" class="input-group">-->
-<!--                    <input type="text" name="term" placeholder="Enter subject name">-->
-<!--                    <button type="submit" id="createSubjectButton"><span>Search</span></button>-->
-<!--                </form>-->
-<!--            </section>-->
 
             <!-- subjects List -->
             <section class="subjects-list">

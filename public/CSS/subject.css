@@ -190,7 +190,7 @@ body, html {
     flex-grow: 1; 
 }
 
-.upload-material button {
+button {
     width: auto; 
     padding: 10px 20px; 
     background-color: #0047AB; 
@@ -212,7 +212,7 @@ body, html {
 }
 
 
-.upload-material button:hover {
+button:hover {
     background-color: #003687; 
 }
 
@@ -241,4 +241,9 @@ body, html {
 
 .upload-material input[type="file"] {
     margin-bottom: 10px; 
+}
+
+textarea {
+    resize: vertical;
+    width: 100%;
 }

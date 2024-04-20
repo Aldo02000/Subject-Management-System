@@ -6,6 +6,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
+const Handlebars = require('handlebars');
 
 // Set the views directory to 'views' and join it with the current directory (__dirname)
 app.set('views', path.join(__dirname, 'src/views'));
@@ -47,5 +48,17 @@ initPassport();
 
 const routes = require('./src/routes/routes');
 app.use('/', routes);
+
+Handlebars.registerHelper('concat', function() {
+  // arguments passed to the helper function
+  let concatenatedString = '';
+
+  // `arguments` is an array-like object containing all the arguments passed to the helper
+  for (let i = 0; i < arguments.length - 1; i++) {
+    concatenatedString += arguments[i];
+  }
+
+  return concatenatedString;
+});
 
 module.exports = app;

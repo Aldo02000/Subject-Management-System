@@ -23,5 +23,6 @@ router.get('/subjects', controller.viewAllSubjects);
 router.post('/enroll/:subjectId', userController.enrollStudent); // Changed to POST method
 router.get('/welcome/:Id/search', userController.searchSubject);
 router.get('/welcome/:Id/subject/:subjectId', userController.viewSubjectDetails);
+router.post('/welcome/:Id/subject/:subjectId/edit-description', userController.editSubjectDescription);
 
 module.exports = router;

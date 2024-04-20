@@ -9,25 +9,8 @@
 </head>
 <body>
     <div class="wrapper">
-     
-        <nav class="sidebar">
-            <div class="sidebar-menu">
-                <div class="logo">STUMA</div>
-                <ul class="menu-items">
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Course Schedule</a></li>
-                    <li><a href="#">Lecture Material</a></li>
-                    <li><a href="#">Enrolled Students</a></li>
-                    <li><a href="#">Announcements & Exams</a></li>
-                    <li><a href="#">Grades</a></li>
-                    <li><a href="#">Setting</a></li>
-                </ul>
-                <div class="logout-section">
-                     <a href="/logout"><button>Logout</button></a>
-                </div>
-            </div>
-        </nav>
 
+        {{> sidebar dashboardLink=(concat '/welcome/' Id) coursesText="Class Schedule" scheduleText="Setting" examsText="asdas"}}
        
         <div class="main-content">
             
@@ -49,9 +32,25 @@
 
             
             <section class="subject-description">
-                <p>
-                    Here comes the description of each subject. 
-                </p>
+
+                <div>
+                    <h2>Description</h2>
+                    <p>{{descriptionText}}</p>
+                </div>
+
+                {{#if isProfessor}}
+                    <div>
+                        <h2>Edit Description</h2>
+                        <form action="welcome/{{Id}}/subject/{{subjectId}}/edit-description" method="post">
+                            <textarea name="description" rows="5" cols="50"></textarea>
+                            <button type="submit">Save Description</button>
+                        </form>
+                    </div>
+                {{else}}
+                    <!-- Render content for non-professor users -->
+                    <p>Welcome, Student!</p>
+                {{/if}}
+
             </section>
 
 

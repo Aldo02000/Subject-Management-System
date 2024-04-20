@@ -208,6 +208,54 @@ function getAvailableCoursesBySearch(studentId, searchTerm) {
     });
 }
 
+function getDescription(subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM descriptions WHERE subject_id = ?',[subjectId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function insertFirstDescription(subjectId, descriptionText) {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO descriptions (subject_id, description) VALUES (?, ?)', [subjectId, descriptionText], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function selectSubjectInProfessor(subjectId, professorId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM professor_subject WHERE subject_id = ? AND professor_id = ?', [subjectId, professorId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function updateDescription(description, subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE descriptions SET description = ? WHERE subject_id = ?', [description, subjectId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
 module.exports = {
     findUsers,
     showUsers,
@@ -222,5 +270,9 @@ module.exports = {
     enrollStudentInSubject,
     isEnrolled,
     getEnrolledCoursesBySearch,
-    getAvailableCoursesBySearch
+    getAvailableCoursesBySearch,
+    getDescription,
+    insertFirstDescription,
+    selectSubjectInProfessor,
+    updateDescription
 };

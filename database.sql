@@ -35,9 +35,9 @@ CREATE TABLE professor_subject (
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
 );
 
-CREATE TABLE sections (
-    section_id INT AUTO_INCREMENT PRIMARY KEY,
-    subject_id INT,
-    name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+CREATE TABLE descriptions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    subject_id INT NOT NULL,
+    description TEXT,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
 );
