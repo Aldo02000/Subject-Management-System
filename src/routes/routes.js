@@ -24,5 +24,7 @@ router.post('/enroll/:subjectId', userController.enrollStudent); // Changed to P
 router.get('/welcome/:Id/search', userController.searchSubject);
 router.get('/welcome/:Id/subject/:subjectId', userController.viewSubjectDetails);
 router.post('/welcome/:Id/subject/:subjectId/edit-description', userController.editSubjectDescription);
+router.post('/welcome/:Id/subject/:subjectId/add-announcement', userController.addAnnouncement);
+router.post('/welcome/:Id/:subjectId/deleteAnnouncement/:announcementId', userController.deleteAnnouncement);
 
 module.exports = router;

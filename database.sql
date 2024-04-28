@@ -41,3 +41,12 @@ CREATE TABLE descriptions (
     description TEXT,
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
 );
+
+CREATE TABLE announcements (
+    announcement_id INT AUTO_INCREMENT PRIMARY KEY,
+    professor_id CHAR(6),
+    subject_id INT NOT NULL,
+    announcement TEXT,
+    FOREIGN KEY (professor_id) REFERENCES User(Id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
+);

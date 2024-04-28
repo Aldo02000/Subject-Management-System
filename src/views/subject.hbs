@@ -6,6 +6,16 @@
     <title>Subject Description - Mathematics</title>
     <base href="/">
     <link rel="stylesheet" type="text/css" href="CSS/subject.css" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addAnnouncementBtn = document.getElementById('addAnnouncementBtn');
+            const announcementForm = document.getElementById('announcementForm');
+
+            addAnnouncementBtn.addEventListener('click', function() {
+                announcementForm.style.display = 'block';
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="wrapper">
@@ -46,9 +56,6 @@
                             <button type="submit">Save Description</button>
                         </form>
                     </div>
-                {{else}}
-                    <!-- Render content for non-professor users -->
-                    <p>Welcome, Student!</p>
                 {{/if}}
 
             </section>
@@ -58,12 +65,27 @@
 
             <section class="announcements">
                 <h2>Announcements</h2>
-                <ul>
-                    
-                    <li>New assignment uploaded.</li>
-                    <li>Midterm exam schedule announced.</li>
-                    
-                </ul>
+                {{#if isProfessor}}
+                    {{#each announcementRows}}
+                        <p>{{this.announcement}}</p>
+                        <form action="/welcome/{{this.professor_id}}/{{this.subject_id}}/deleteAnnouncement/{{this.announcement_id}}" method="POST">
+                            <button>Delete</button>
+                        </form>
+                    {{/each}}
+
+                    <button id="addAnnouncementBtn">Add Announcement</button>
+
+                    <form action="welcome/{{Id}}/subject/{{subjectId}}/add-announcement" method="post" id="announcementForm" style="display:none;">
+                        <textarea name="announcement" id="announcementText" rows="4" cols="50"></textarea>
+                        <button type="submit" id="submitAnnouncementBtn">Submit</button>
+                    </form>
+
+                {{else}}
+                    {{#each announcementRows}}
+                        <p>{{this.announcement}}</p>
+                    {{/each}}
+                {{/if}}
+
             </section>
             
             

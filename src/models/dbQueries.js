@@ -256,6 +256,56 @@ function updateDescription(description, subjectId) {
     });
 }
 
+function selectSubjectInStudent(subjectId, studentId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, studentId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function insertAnnouncement(subjectId, professorId, announcement) {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO announcements (subject_id, professor_id, announcement) VALUES (?, ?, ?)', [subjectId, professorId, announcement], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getAnnouncement(subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM announcements WHERE subject_id = ?',[subjectId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function deleteAnnouncement(announcementId) {
+    return new Promise((resolve, reject) => {
+        connection.query('DELETE FROM announcements WHERE announcement_id = ?', [announcementId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+
+
 module.exports = {
     findUsers,
     showUsers,
@@ -274,5 +324,9 @@ module.exports = {
     getDescription,
     insertFirstDescription,
     selectSubjectInProfessor,
-    updateDescription
+    updateDescription,
+    selectSubjectInStudent,
+    insertAnnouncement,
+    getAnnouncement,
+    deleteAnnouncement
 };

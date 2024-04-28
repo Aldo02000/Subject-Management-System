@@ -378,14 +378,16 @@ exports.searchSubject = async (req, res) => {
 exports.viewSubjectDetails = async (req, res) => {
     const {Id, subjectId} = req.params;
     let descriptionLine;
+    let announcementLine;
 
     if (req.user.RoleOfUser === 'Student') {
-        db.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, Id], (err, subject) => {
-            if (err) throw err;
 
-            // Render the subject details page with subject information
-            res.render('subject', {Id, description});
-        });
+        const [descriptionRows] = await query.getDescription(subjectId);
+        let announcementRows = await query.getAnnouncement(subjectId);
+
+        await query.selectSubjectInStudent(subjectId, Id);
+
+        res.render('subject', {Id, descriptionText: descriptionRows.description, announcementRows});
     }
 
     if (req.user.RoleOfUser === 'Professor') {
@@ -402,9 +404,11 @@ exports.viewSubjectDetails = async (req, res) => {
                 descriptionLine = descriptionRows.description;
             }
 
+            let announcementRows = await query.getAnnouncement(subjectId);
+
             await query.selectSubjectInProfessor(subjectId, Id);
 
-            res.render('subject', {Id, isProfessor, subjectId, descriptionText: descriptionLine});
+            res.render('subject', {Id, isProfessor, subjectId, descriptionText: descriptionLine, announcementRows});
 
         }  catch (error) {
             console.error('Error retrieving description:', error);
@@ -420,6 +424,27 @@ exports.editSubjectDescription = async (req, res) => {
     const {subjectId} = req.params;
 
     await query.updateDescription(req.body.description, subjectId);
+
+    // Redirect back to the subject details page
+    res.redirect(`/welcome/${req.params.Id}/subject/${req.params.subjectId}`);
+
+};
+
+exports.addAnnouncement = async (req, res) => {
+    // Check if description already exists for the subject
+    const {subjectId, Id} = req.params;
+
+    await query.insertAnnouncement(subjectId, Id, req.body.announcement);
+
+    // Redirect back to the subject details page
+    res.redirect(`/welcome/${req.params.Id}/subject/${req.params.subjectId}`);
+};
+
+exports.deleteAnnouncement = async (req, res) => {
+    // Check if description already exists for the subject
+    const {announcementId} = req.params;
+
+    await query.deleteAnnouncement(announcementId);
 
     // Redirect back to the subject details page
     res.redirect(`/welcome/${req.params.Id}/subject/${req.params.subjectId}`);
