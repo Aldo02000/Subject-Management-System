@@ -70,8 +70,9 @@ exports.welcome = async (req, res) => {
         // Fetch enrolled courses for the student
         const enrolledCourses = await query.getEnrolledCourses(studentId);
         // Render the student view with the user's name and enrolled/available courses
-        res.render('student', {
+        res.render('student_new', {
             name: req.user.NameOfUser,
+            email: req.user.Email,
             studentId,
             enrolledCourses,
             availableCourses,
@@ -83,10 +84,14 @@ exports.welcome = async (req, res) => {
     if (req.user.RoleOfUser === 'Professor') {
         const professorId = req.user.Id;
 
-        db.query('SELECT * FROM subjects WHERE professor_id = ?', [professorId], (err, subjects) => {
-            if (err) throw err;
+        const subjects = await query.getAllProfessorSubjects(professorId);
 
-            res.render('professor', {name: req.user.NameOfUser, professorId, subjects, layout: 'page'});
+        res.render('professor_new', {
+            name: req.user.NameOfUser,
+            email: req.user.Email,
+            professorId,
+            subjects,
+            layout: 'page'
         });
     }
 };
@@ -261,17 +266,17 @@ exports.delete = async (req, res) => {
     }
 }
 
-exports.createSubject = (req, res) => {
+exports.createSubject = async (req, res) => {
     const {name} = req.body;
-    const professorId = req.params.Id; // Assuming the professor's ID is passed in the URL parameter
+    const professorId = req.params.Id;
+    const description = req.body.description;
 
     // Insert new subject into the database
-    db.query('INSERT INTO subjects (name, professor_id) VALUES (?, ?)', [name, professorId], (err, results) => {
-        if (err) throw err;
-        const subjectId = results.insertId; // Get the ID of the newly inserted subject
-        // Redirect to the welcome page or any other page as needed
-        res.redirect(`/welcome/${professorId}`);
-    });
+    const createdSubject = await query.createSubject(name, professorId);
+    await query.insertFirstDescription(createdSubject.insertId, description);
+
+
+    res.redirect(`/welcome/${professorId}`);
 }
 
 exports.deleteSubject = (req, res) => {
@@ -297,16 +302,16 @@ exports.deleteSubject = (req, res) => {
 
 
 // Function to render student view with available subjects
-exports.viewAllSubjects = async (req, res) => {
-    try {
-        const subjects = await query.getAvailableCourses(studentId);
-        console.log(subjects);
-        res.render('student', {subjects, layout: 'page'});
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
-};
+// exports.viewAllSubjects = async (req, res) => {
+//     try {
+//         const subjects = await query.getAvailableCourses(studentId);
+//         console.log(subjects);
+//         res.render('student', {subjects, layout: 'page'});
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
 
 // exports.enrollSubject = async (req, res) => {
 //     const studentId = req.user.Id;
@@ -320,16 +325,16 @@ exports.viewAllSubjects = async (req, res) => {
 //     }
 // };
 
-exports.viewEnrolledCourses = async (req, res) => {
-    const studentId = req.user.Id; // Assuming studentId is available in req.user
-
-    try {
-        const enrolledCourses = await query.getEnrolledCourses(studentId);
-        res.redirect('enrolled_courses', {enrolledCourses});
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
+// exports.viewEnrolledCourses = async (req, res) => {
+//     const studentId = req.user.Id; // Assuming studentId is available in req.user
+//
+//     try {
+//         const enrolledCourses = await query.getEnrolledCourses(studentId);
+//         res.redirect('enrolled_courses', {enrolledCourses});
+//     } catch (error) {
+//         res.status(500).send(error.message);
+//     }
+// };
 
 exports.enrollStudent = async (req, res) => {
     try {
@@ -367,7 +372,34 @@ exports.searchSubject = async (req, res) => {
     try {
         const enrolledCourses = await query.getEnrolledCoursesBySearch(studentId, searchTerm);
         const availableCourses = await query.getAvailableCoursesBySearch(studentId, searchTerm);
-        res.render('subjectSearch', {enrolledCourses, availableCourses});
+        const allEnrolledCourses = await query.getEnrolledCourses(studentId);
+        res.render('subjectSearch_new', {
+            allEnrolledCourses,
+            enrolledCourses,
+            name: req.user.NameOfUser,
+            email: req.user.Email,
+            availableCourses,
+            studentId
+        });
+    } catch (err) {
+        console.error('Error searching for subjects:', err);
+        res.status(500).json({error: 'An error occurred while searching for subjects'});
+    }
+};
+
+exports.getAvailableSubjects = async (req, res) => {
+    const studentId = req.params.Id;
+
+    try {
+        const availableCourses = await query.getAvailableCourses(studentId);
+        const enrolledCourses = await query.getEnrolledCourses(studentId);
+        res.render('availableSubjects', {
+            availableCourses,
+            name: req.user.NameOfUser,
+            email: req.user.Email,
+            enrolledCourses,
+            studentId
+        });
     } catch (err) {
         console.error('Error searching for subjects:', err);
         res.status(500).json({error: 'An error occurred while searching for subjects'});
@@ -378,16 +410,24 @@ exports.searchSubject = async (req, res) => {
 exports.viewSubjectDetails = async (req, res) => {
     const {Id, subjectId} = req.params;
     let descriptionLine;
-    let announcementLine;
 
     if (req.user.RoleOfUser === 'Student') {
 
         const [descriptionRows] = await query.getDescription(subjectId);
         let announcementRows = await query.getAnnouncement(subjectId);
 
-        await query.selectSubjectInStudent(subjectId, Id);
+        const subject_result = await query.selectSubjectInStudent(subjectId, Id);
+        const enrolledCourses = await query.getEnrolledCourses(Id);
 
-        res.render('subject', {Id, descriptionText: descriptionRows.description, announcementRows});
+        res.render('subject_new_student', {
+            enrolledCourses,
+            subject_name: subject_result[0].subject_name,
+            studentId: Id,
+            name: req.user.NameOfUser,
+            email: req.user.Email,
+            descriptionText: descriptionRows.description,
+            announcementRows
+        });
     }
 
     if (req.user.RoleOfUser === 'Professor') {
@@ -396,21 +436,27 @@ exports.viewSubjectDetails = async (req, res) => {
         try {
             const [descriptionRows] = await query.getDescription(subjectId);
 
-            if (descriptionRows === undefined) {
-                const initialText = 'Initial description text';
-                await query.insertFirstDescription(subjectId, initialText);
-                descriptionLine = initialText;
-            } else {
-                descriptionLine = descriptionRows.description;
-            }
+            descriptionLine = descriptionRows.description;
 
             let announcementRows = await query.getAnnouncement(subjectId);
 
-            await query.selectSubjectInProfessor(subjectId, Id);
+            const subject_result = await query.selectSubjectInProfessor(subjectId, Id);
 
-            res.render('subject', {Id, isProfessor, subjectId, descriptionText: descriptionLine, announcementRows});
+            const subjects = await query.getAllProfessorSubjects(Id);
 
-        }  catch (error) {
+            res.render('subject_new_professor', {
+                subject_name: subject_result[0].subject_name,
+                isProfessor,
+                Id: Id,
+                name: req.user.NameOfUser,
+                email: req.user.Email,
+                subjectId,
+                descriptionText: descriptionLine,
+                announcementRows,
+                subjects
+            });
+
+        } catch (error) {
             console.error('Error retrieving description:', error);
             throw new Error('Failed to retrieve description from the database');
         }
@@ -431,7 +477,6 @@ exports.editSubjectDescription = async (req, res) => {
 };
 
 exports.addAnnouncement = async (req, res) => {
-    // Check if description already exists for the subject
     const {subjectId, Id} = req.params;
 
     await query.insertAnnouncement(subjectId, Id, req.body.announcement);
@@ -441,12 +486,10 @@ exports.addAnnouncement = async (req, res) => {
 };
 
 exports.deleteAnnouncement = async (req, res) => {
-    // Check if description already exists for the subject
     const {announcementId} = req.params;
 
     await query.deleteAnnouncement(announcementId);
 
     // Redirect back to the subject details page
     res.redirect(`/welcome/${req.params.Id}/subject/${req.params.subjectId}`);
-
 };

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/controller');
-const controller = require('../controllers/controller');
 
 router.get('/', userController.index);
 router.get('/login', userController.login);
@@ -18,13 +17,14 @@ router.post('/addSection', userController.addSection);
 router.get('/welcome/:Id', userController.welcome);
 router.post('/welcome/:Id/createSubject', userController.createSubject);
 router.post('/welcome/:Id/deleteSubject/:subjectId', userController.deleteSubject);
-router.get('/student/:Id', userController.viewAllSubjects);
-router.get('/subjects', controller.viewAllSubjects);
-router.post('/enroll/:subjectId', userController.enrollStudent); // Changed to POST method
+// router.get('/student/:Id', userController.viewAllSubjects);
+// router.get('/subjects', controller.viewAllSubjects);
+router.post('/enroll/:subjectId', userController.enrollStudent);
 router.get('/welcome/:Id/search', userController.searchSubject);
 router.get('/welcome/:Id/subject/:subjectId', userController.viewSubjectDetails);
 router.post('/welcome/:Id/subject/:subjectId/edit-description', userController.editSubjectDescription);
 router.post('/welcome/:Id/subject/:subjectId/add-announcement', userController.addAnnouncement);
-router.post('/welcome/:Id/:subjectId/deleteAnnouncement/:announcementId', userController.deleteAnnouncement);
+router.post('/welcome/:Id/subject/:subjectId/deleteAnnouncement/:announcementId', userController.deleteAnnouncement);
+router.get('/welcome/:Id/availableSubjects', userController.getAvailableSubjects);
 
 module.exports = router;

@@ -9,7 +9,7 @@ const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
 
 // Set the views directory to 'views' and join it with the current directory (__dirname)
-app.set('views', path.join(__dirname, 'src/views'));
+app.set('views', path.join(__dirname, 'src', 'views', 'theme'));
 
 // Set up middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: false }))
@@ -22,7 +22,7 @@ app.use(flash());
 app.use(bodyParser.json());
 
 // Set the static file directory to 'views' and join it with the current directory (__dirname)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
 
 // Setting up a static file server for the entire project directory, for the moment commented out
 // app.use(express.static(path.join(__dirname)));

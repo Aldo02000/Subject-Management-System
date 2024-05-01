@@ -142,7 +142,7 @@ function getAvailableCourses(studentId) {
         const sql = `
             SELECT s.*
             FROM subjects s
-            LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
+                     LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
             WHERE ss.student_id IS NULL`;
 
         connection.query(sql, [studentId], (err, results) => {
@@ -172,9 +172,11 @@ function isEnrolled(studentId, subjectId) {
 function getEnrolledCoursesBySearch(studentId, searchTerm) {
     return new Promise((resolve, reject) => {
         const sql = `
-            SELECT * FROM subjects
-            JOIN student_subject ON subjects.subject_id = student_subject.subject_id
-            WHERE student_subject.student_id = ? AND subjects.name LIKE ?`;
+            SELECT *
+            FROM subjects
+                     JOIN student_subject ON subjects.subject_id = student_subject.subject_id
+            WHERE student_subject.student_id = ?
+              AND subjects.name LIKE ?`;
 
         const searchTermWithWildcards = `%${searchTerm}%`;
 
@@ -193,8 +195,9 @@ function getAvailableCoursesBySearch(studentId, searchTerm) {
         const sql = `
             SELECT s.*
             FROM subjects s
-            LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
-            WHERE ss.student_id IS NULL AND s.name LIKE ?`;
+                     LEFT JOIN student_subject ss ON s.subject_id = ss.subject_id AND ss.student_id = ?
+            WHERE ss.student_id IS NULL
+              AND s.name LIKE ?`;
 
         const searchTermWithWildcards = `%${searchTerm}%`;
 
@@ -210,7 +213,7 @@ function getAvailableCoursesBySearch(studentId, searchTerm) {
 
 function getDescription(subjectId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM descriptions WHERE subject_id = ?',[subjectId], (err, results) => {
+        connection.query('SELECT * FROM descriptions WHERE subject_id = ?', [subjectId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -232,21 +235,30 @@ function insertFirstDescription(subjectId, descriptionText) {
     });
 }
 
-function selectSubjectInProfessor(subjectId, professorId) {
+function createSubject(name, professorId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM professor_subject WHERE subject_id = ? AND professor_id = ?', [subjectId, professorId], (err, results) => {
+        connection.query('INSERT INTO subjects (name, professor_id) VALUES (?, ?)', [name, professorId], (err, results) => {
             if (err) {
-                reject(err);
+                throw err;
             } else {
-                resolve(results);
+                const subjectId = results.insertId; // Get the ID of the newly inserted subject
+
+                // Insert the subject into the professor_subject table
+                connection.query('INSERT INTO professor_subject (subject_id, professor_id) VALUES (?, ?)', [subjectId, professorId], (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(results);
+                    }
+                });
             }
-        });
-    });
+        })
+    })
 }
 
-function updateDescription(description, subjectId) {
+function selectSubjectInProfessor(subjectId, professorId) {
     return new Promise((resolve, reject) => {
-        connection.query('UPDATE descriptions SET description = ? WHERE subject_id = ?', [description, subjectId], (err, results) => {
+        connection.query('SELECT ps.*, s.name AS subject_name FROM professor_subject ps JOIN subjects s ON ps.subject_id = s.subject_id WHERE ps.subject_id = ? AND ps.professor_id = ?', [subjectId, professorId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -258,7 +270,43 @@ function updateDescription(description, subjectId) {
 
 function selectSubjectInStudent(subjectId, studentId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, studentId], (err, results) => {
+        connection.query('SELECT ss.*, s.name AS subject_name FROM student_subject ss JOIN subjects s ON ss.subject_id = s.subject_id WHERE ss.subject_id = ? AND ss.student_id = ?', [subjectId, studentId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getAllProfessorSubjects(professorId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM subjects WHERE professor_id = ?', [professorId], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+// function selectSubjectInStudent(subjectId, studentId) {
+//     return new Promise((resolve, reject) => {
+//         connection.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, studentId], (err, results) => {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 resolve(results);
+//             }
+//         });
+//     });
+// }
+
+function updateDescription(description, subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('UPDATE descriptions SET description = ? WHERE subject_id = ?', [description, subjectId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -282,7 +330,7 @@ function insertAnnouncement(subjectId, professorId, announcement) {
 
 function getAnnouncement(subjectId) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM announcements WHERE subject_id = ?',[subjectId], (err, results) => {
+        connection.query('SELECT * FROM announcements WHERE subject_id = ?', [subjectId], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -305,7 +353,6 @@ function deleteAnnouncement(announcementId) {
 }
 
 
-
 module.exports = {
     findUsers,
     showUsers,
@@ -314,8 +361,10 @@ module.exports = {
     deleteUser,
     editUser,
     updateUser,
+    createSubject,
     getAllSubjects,
     getAvailableCourses,
+    getAllProfessorSubjects,
     getEnrolledCourses,
     enrollStudentInSubject,
     isEnrolled,
