@@ -15255,7 +15255,6 @@ div.copied {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   background-color: #ffffff;
-  border-bottom: 1px solid #e5e9f2;
   padding-bottom: 0.94rem;
   padding: 1.25rem 1.25rem 0.63rem;
   color: #1b223c;
@@ -15940,9 +15939,26 @@ div.copied {
   padding: .4em .6em;
 }
 
+#person-icon {
+  font-size: 22px;
+}
+
+#pdfFiles {
+  padding: 6px 34px 20px !important;
+}
+
 .sidebar .sub-menu > li > a .nav-text {
   white-space: pre-line;
   font-size: 12px;
+}
+
+#pdfContainer {
+  font-size: 17px;
+}
+
+#pdf-icon {
+  padding: 0 10px 0 0;
+  font-size: 26px;
 }
 
 .sidebar .sub-menu .has-sub .nav-text {
@@ -18844,7 +18860,6 @@ tbody tr td:first-child {
   font-size: .88rem;
   font-weight: 400;
   padding: 0 1.90rem 1.25rem 0;
-  color: #8a909d;
 }
 
 @media (min-width: 768px) {

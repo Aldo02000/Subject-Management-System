@@ -20,6 +20,7 @@ CREATE TABLE subjects (
     name VARCHAR(255) NOT NULL,
     professor_id CHAR(6),
     student_id CHAR(6),
+    student_count INT DEFAULT 0,
     FOREIGN KEY (professor_id) REFERENCES User(Id)
 );
 
@@ -29,7 +30,7 @@ CREATE TABLE student_subject (
     student_id CHAR(6),
     subject_id INT,
     FOREIGN KEY (student_id) REFERENCES User(Id),
-    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
 );
 
 DROP TABLE  professor_subject;
@@ -38,7 +39,7 @@ CREATE TABLE professor_subject (
     professor_id CHAR(6),
     subject_id INT,
     FOREIGN KEY (professor_id) REFERENCES User(Id),
-    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
 );
 
 DROP TABLE  descriptions;
@@ -57,6 +58,19 @@ CREATE TABLE announcements (
     professor_id CHAR(6),
     subject_id INT NOT NULL,
     announcement TEXT,
+    FOREIGN KEY (professor_id) REFERENCES User(Id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
+);
+
+DROP TABLE  pdf_files;
+
+CREATE TABLE pdf_files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    professor_id CHAR(6),
+    subject_id INT NOT NULL,
+    filename VARCHAR(255),
+    filepath VARCHAR(255),
+    typeOfPdf VARCHAR(10) NOT NULL,
     FOREIGN KEY (professor_id) REFERENCES User(Id),
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
 );

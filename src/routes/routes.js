@@ -26,5 +26,8 @@ router.post('/welcome/:Id/subject/:subjectId/edit-description', userController.e
 router.post('/welcome/:Id/subject/:subjectId/add-announcement', userController.addAnnouncement);
 router.post('/welcome/:Id/subject/:subjectId/deleteAnnouncement/:announcementId', userController.deleteAnnouncement);
 router.get('/welcome/:Id/availableSubjects', userController.getAvailableSubjects);
+router.post('/welcome/:Id/subject/:subjectId/upload-lecture', userController.uploadLectures);
+router.post('/welcome/:Id/subject/:subjectId/upload-labs', userController.uploadLabs);
+router.post('/welcome/:Id/subject/:subjectId/delete-pdf/:pdfId', userController.deletePdf)
 
 module.exports = router;

@@ -345,29 +345,15 @@
                         <!-- User Account -->
                         <li class="dropdown user-menu">
                             <button href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                <img src="../../../src/views/theme/assets/img/user/user.png" class="user-image"
-                                     alt="User Image"/>
+                                <i class="bi bi-person" id="person-icon"></i>
                                 <span class="d-none d-lg-inline-block">{{name}}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <!-- User image -->
                                 <li class="dropdown-header">
-                                    <img src="../../../src/views/theme/assets/img/user/user.png" class="img-circle"
-                                         alt="User Image"/>
                                     <div class="d-inline-block">
                                         {{name}} <small class="pt-1">{{email}}</small>
                                     </div>
-                                </li>
-
-                                <li>
-                                    <a href="user-profile.html">
-                                        <i class="mdi mdi-account"></i> My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="mdi mdi-email"></i> Messages
-                                    </a>
                                 </li>
                                 <li class="dropdown-footer">
                                     <a href="/logout"> <i class="mdi mdi-logout"></i> Log Out </a>
@@ -402,8 +388,6 @@
                                         <th>Subject ID</th>
                                         <th>Subject Name</th>
                                         <th class="d-none d-lg-table-cell">Students</th>
-                                        <th>Status</th>
-                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -415,10 +399,7 @@
                                                    href="{{this.student_id}}/subject/{{this.subject_id}}">{{this.name}}
                                                 </a>
                                             </td>
-                                            <td class="d-none d-lg-table-cell">20</td>
-                                            <td>
-                                                <span class="badge badge-warning">On going</span>
-                                            </td>
+                                            <td class="d-none d-lg-table-cell">{{this.student_count}}</td>
                                         </tr>
                                     {{/each}}
                                     </tbody>

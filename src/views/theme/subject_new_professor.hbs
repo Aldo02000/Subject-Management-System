@@ -88,6 +88,49 @@
 
                     <li class="has-sub ">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#forms"
+                           aria-expanded="false" aria-controls="forms">
+                            <i class="mdi mdi-email-mark-as-unread"></i>
+                            <span class="nav-text">Page Content</span> <b class="caret"></b>
+                        </a>
+
+                        <ul class="collapse " id="forms" data-parent="#sidebar-menu">
+                            <div class="sub-menu">
+                                <li class="">
+                                    <a class="sidenav-item-link" href="#description">
+                                        <span class="nav-text">Description</span>
+                                    </a>
+                                </li>
+
+                                <li class="">
+                                    <a class="sidenav-item-link" href="#Announcements">
+                                        <span class="nav-text">Announcements</span>
+                                    </a>
+                                </li>
+
+                                <li class="">
+                                    <a class="sidenav-item-link" href="#Lectures">
+                                        <span class="nav-text">Lectures</span>
+                                    </a>
+                                </li>
+
+                                <li class="">
+                                    <a class="sidenav-item-link" href="#labs">
+                                        <span class="nav-text">Labs</span>
+                                    </a>
+                                </li>
+
+                                <li class="">
+                                    <a class="sidenav-item-link" href="#students">
+                                        <span class="nav-text">Students</span>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+
+                    <li class="has-sub ">
+                        <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
                            data-target="#tables"
                            aria-expanded="false" aria-controls="tables">
                             <i class="mdi mdi-table"></i>
@@ -336,29 +379,15 @@
                         <!-- User Account -->
                         <li class="dropdown user-menu">
                             <button href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                <img src="../../../src/views/theme/assets/img/user/user.png" class="user-image"
-                                     alt="User Image"/>
+                                <i class="bi bi-person" id="person-icon"></i>
                                 <span class="d-none d-lg-inline-block">{{name}}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <!-- User image -->
                                 <li class="dropdown-header">
-                                    <img src="../../../src/views/theme/assets/img/user/user.png" class="img-circle"
-                                         alt="User Image"/>
                                     <div class="d-inline-block">
                                         {{name}} <small class="pt-1">{{email}}</small>
                                     </div>
-                                </li>
-
-                                <li>
-                                    <a href="user-profile.html">
-                                        <i class="mdi mdi-account"></i> My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="mdi mdi-email"></i> Messages
-                                    </a>
                                 </li>
                                 <li class="dropdown-footer">
                                     <a href="/logout"> <i class="mdi mdi-logout"></i> Log Out </a>
@@ -382,7 +411,7 @@
                     <h1>{{subject_name}}</h1>
                 </div>
 
-                <div class="row">
+                <div class="row" id="description">
                     <div class="col-lg-12">
                         <div class="card card-default">
                             <div class="card-header card-header-border-bottom">
@@ -392,89 +421,173 @@
                             <div class="card-body">
                                 <p class="mb-5">{{descriptionText}}</p>
                             </div>
-
-                            {{#if isProfessor}}
-                                <div class="col-lg-12">
-                                    <h3 id="edit-description">Edit Description</h3>
-                                    <form action="{{subjectId}}/edit-description" method="post">
-                                        <label id="textarea-label">
+                            <div class="col-lg-12">
+                                <h3 id="edit-description">Edit Description</h3>
+                                <form action="{{subjectId}}/edit-description" method="post">
+                                    <label id="textarea-label">
                                             <textarea class="form-control" id="exampleFormControlInput1"
                                                       name="description" rows="5" cols="50"></textarea>
-                                        </label>
-                                        <button type="submit" id="Submit-description"
-                                                class="btn btn-primary btn-default">Submit
-                                        </button>
-                                    </form>
-                                </div>
-                            {{/if}}
+                                    </label>
+                                    <button type="submit" id="Submit-description"
+                                            class="btn btn-primary btn-default">Submit
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card card-default">
+                <div class="card card-default" id="Announcements">
                     <div class="card-header card-header-border-bottom">
                         <h2>Announcements</h2>
                     </div>
 
                     <div class="card-body">
 
-                        {{#if isProfessor}}
-                            {{#each announcementRows}}
+                        {{#each announcementRows}}
 
-                                <div class="carousel-inner">
+                            <div class="carousel-inner">
 
-                                    <div class="carousel-item active">
-                                        <div class="card border-0 text-center">
+                                <div class="carousel-item active">
+                                    <div class="card border-0 text-center">
 
-                                            <div class="card-body">
-                                                <p id="announcement-paragraph">{{this.announcement}}</p>
-                                                <form action="/welcome/{{this.professor_id}}/subject/{{this.subject_id}}/deleteAnnouncement/{{this.announcement_id}}"
-                                                      method="POST">
-                                                    <button type="submit" class="btn btn-primary btn-default"
-                                                            id="delete-subject-button">Delete
-                                                    </button>
-                                                </form>
-                                            </div>
-
+                                        <div class="card-body">
+                                            <p id="announcement-paragraph">{{this.announcement}}</p>
+                                            <form action="/welcome/{{this.professor_id}}/subject/{{this.subject_id}}/deleteAnnouncement/{{this.announcement_id}}"
+                                                  method="POST">
+                                                <button type="submit" class="btn btn-primary btn-default"
+                                                        id="delete-subject-button">Delete
+                                                </button>
+                                            </form>
                                         </div>
+
                                     </div>
                                 </div>
-                            {{/each}}
-
-                            <div class="form-footer pt-3 border-top">
-                                <button type="submit" id="addAnnouncementBtn" class="btn btn-primary btn-default">Add
-                                    Announcement
-                                </button>
                             </div>
+                        {{/each}}
 
-                            <form action="/welcome/{{Id}}/subject/{{subjectId}}/add-announcement" method="post" id="announcementForm"
-                                  style="display:none;">
-                                <label id="textarea-label">
+                        <div class="form-footer pt-3 border-top">
+                            <button type="submit" id="addAnnouncementBtn" class="btn btn-primary btn-default">Add
+                                Announcement
+                            </button>
+                        </div>
+
+                        <form action="/welcome/{{Id}}/subject/{{subjectId}}/add-announcement" method="post"
+                              id="announcementForm"
+                              style="display:none;">
+                            <label id="textarea-label">
                                     <textarea class="form-control" id="exampleFormControlInput1"
                                               name="announcement" rows="5" cols="50"></textarea>
-                                </label>
-                                <button type="submit" class="btn btn-primary btn-default" id="submit-announcement">
-                                    Submit
-                                </button>
-                            </form>
-
-                        {{else}}
-                            {{#each announcementRows}}
-                                <div class="carousel-inner">
-
-                                    <div class="carousel-item active">
-                                        <div class="card border-0 text-center">
-                                            <div class="card-body">
-                                                <p>{{this.announcement}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {{/each}}
-                        {{/if}}
+                            </label>
+                            <button type="submit" class="btn btn-primary btn-default" id="submit-announcement">
+                                Submit
+                            </button>
+                        </form>
                     </div>
                 </div>
+                <div class="card card-default" id="Lectures">
+                    <div class="card-header card-header-border-bottom">
+                        <h2>Lectures</h2>
+                    </div>
 
+                    <div class="card-body">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <form action="/welcome/{{Id}}/subject/{{subjectId}}/upload-lecture"
+                                      enctype="multipart/form-data" method="post">
+                                    <label for="fileUpload">Select a file:</label>
+                                    <input type="file" id="fileUpload" name="pdfFile" accept=".pdf,.doc,.docx,.txt"
+                                           required>
+                                    <button type="submit" class="btn btn-primary btn-default">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{#each lectureFilePath}}
+                        <div class="card-body" id="pdfFiles">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" id="pdfContainer">
+                                    <i class="bi bi-file-pdf" id="pdf-icon"></i>
+                                    <a href="../../../{{this.filepath}}"
+                                       download="{{this.filename}}">{{this.filename}}</a>
+                                    <form action="{{this.subject_id}}/delete-pdf/{{this.id}}"
+                                          method="POST">
+                                        <button type="submit" class="btn btn-primary btn-default"
+                                                id="delete-subject-button">Delete
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+
+                <div class="card card-default" id="labs">
+                    <div class="card-header card-header-border-bottom">
+                        <h2>Labs</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <form action="/welcome/{{Id}}/subject/{{subjectId}}/upload-labs"
+                                      enctype="multipart/form-data" method="post">
+                                    <label for="fileUpload">Select a file:</label>
+                                    <input type="file" id="fileUpload" name="pdfFile" accept=".pdf,.doc,.docx,.txt"
+                                           required>
+                                    <button type="submit" class="btn btn-primary btn-default">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{#each labFilePath}}
+                        <div class="card-body" id="pdfFiles">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" id="pdfContainer">
+                                    <i class="bi bi-file-pdf" id="pdf-icon"></i>
+                                    <a href="../../../{{this.filepath}}"
+                                       download="{{this.filename}}">{{this.filename}}</a>
+                                    <form action="{{this.subject_id}}/delete-pdf/{{this.id}}"
+                                          method="POST">
+                                        <button type="submit" class="btn btn-primary btn-default"
+                                                id="delete-subject-button">Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+
+                <div class="card card-table-border-none recent-orders" id="recent-orders">
+                    <div class="card-header justify-content-between" id="students">
+                        <h2>Enrolled Students ({{numberOfStudents}})</h2>
+                    </div>
+                    <div class="card-body pt-0 pb-5">
+                        <table class="table card-table table-responsive table-responsive-large"
+                               style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th class="d-none d-lg-table-cell">Email</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each students}}
+                                <tr>
+                                    <td>{{this.Id}}</td>
+                                    <td>{{this.NameOfUser}}</td>
+                                    <td>{{this.Email}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div> <!-- End Content -->
         </div> <!-- End Content Wrapper -->
@@ -502,6 +615,16 @@
 <script src="../../../src/views/theme/assets/js/sleek.js"></script>
 <link href="../../../src/views/source/assets/options/optionswitch.css" rel="stylesheet">
 <script src="../../../src/views/source/assets/options/optionswitcher.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addAnnouncementBtn = document.getElementById('addAnnouncementBtn');
+        const announcementForm = document.getElementById('announcementForm');
+        addAnnouncementBtn.addEventListener('click', function () {
+            announcementForm.style.display = 'block';
+        });
+    });
+</script>
 
 </body>
 </html>

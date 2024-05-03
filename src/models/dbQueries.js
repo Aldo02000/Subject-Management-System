@@ -113,18 +113,6 @@ function getAllSubjects() {
     });
 }
 
-function enrollStudentInSubject(studentId, subjectId) {
-    return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO student_subject (student_id, subject_id) VALUES (?, ?)', [studentId, subjectId], (err, results) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(results);
-            }
-        });
-    });
-}
-
 function getEnrolledCourses(studentId) {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * FROM subjects JOIN student_subject ON subjects.subject_id = student_subject.subject_id WHERE student_subject.student_id = ?', [studentId], (err, results) => {
@@ -292,18 +280,6 @@ function getAllProfessorSubjects(professorId) {
     });
 }
 
-// function selectSubjectInStudent(subjectId, studentId) {
-//     return new Promise((resolve, reject) => {
-//         connection.query('SELECT * FROM student_subject WHERE subject_id = ? AND student_id = ?', [subjectId, studentId], (err, results) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(results);
-//             }
-//         });
-//     });
-// }
-
 function updateDescription(description, subjectId) {
     return new Promise((resolve, reject) => {
         connection.query('UPDATE descriptions SET description = ? WHERE subject_id = ?', [description, subjectId], (err, results) => {
@@ -352,6 +328,85 @@ function deleteAnnouncement(announcementId) {
     });
 }
 
+function savePdf(professorId, subjectId, filePath, filename, typeOfPdf) {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO pdf_files (professor_id, subject_id, filepath, filename, typeOfPdf) VALUES (?, ?, ?, ?, ?)', [professorId, subjectId, filePath, filename, typeOfPdf], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+};
+
+function getPdfFilePath(subjectId, typeOfPdf) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM pdf_files WHERE subject_id = ? AND typeOfPdf = ?', [subjectId, typeOfPdf] ,(err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function deletePdfFile(pdfId) {
+    return new Promise((resolve, reject) => {
+
+        connection.query('DELETE FROM pdf_files WHERE id = ?', [pdfId] ,(err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function enrollStudentInSubject(studentId, subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO student_subject (student_id, subject_id) VALUES (?, ?)', [studentId, subjectId], (err, results) => {
+            if (err) {
+                throw err;
+            } else {
+                connection.query('UPDATE subjects SET student_count = student_count + 1 WHERE subject_id = ?', [subjectId], (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(results);
+                    }
+                });
+            }
+        })
+    })
+}
+
+function getStudentsOfSubject(subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT U.Id, U.NameOfUser, U.Email FROM User U JOIN student_subject SS ON U.Id = SS.student_id WHERE SS.subject_id = ?', [subjectId] ,(err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getNumberOfStudentsInSubject(subjectId) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT student_count FROM subjects WHERE subject_id = ?', [subjectId] ,(err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
 
 module.exports = {
     findUsers,
@@ -377,5 +432,10 @@ module.exports = {
     selectSubjectInStudent,
     insertAnnouncement,
     getAnnouncement,
-    deleteAnnouncement
+    deleteAnnouncement,
+    getPdfFilePath,
+    savePdf,
+    deletePdfFile,
+    getStudentsOfSubject,
+    getNumberOfStudentsInSubject
 };

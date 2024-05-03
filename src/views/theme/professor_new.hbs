@@ -4,11 +4,11 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<!--    <meta name="description"-->
-<!--          content="Sleek Dashboard - Free Bootstrap 4 Admin Dashboard Template and UI Kit. It is very powerful bootstrap admin dashboard, which allows you to build products like admin panels, content management systems and CRMs etc.">-->
+    <!--    <meta name="description"-->
+    <!--          content="Sleek Dashboard - Free Bootstrap 4 Admin Dashboard Template and UI Kit. It is very powerful bootstrap admin dashboard, which allows you to build products like admin panels, content management systems and CRMs etc.">-->
 
     <!-- theme meta -->
-<!--    <meta name="theme-name" content="sleek"/>-->
+    <!--    <meta name="theme-name" content="sleek"/>-->
 
     <title>STUMA - Student Subject Management System</title>
 
@@ -36,15 +36,15 @@
     <!-- FAVICON -->
     <link href="../../../src/views/theme/assets/img/favicon.png" rel="shortcut icon"/>
 
-<!--    &lt;!&ndash;-->
-<!--      HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries-->
-<!--    &ndash;&gt;-->
-<!--    &lt;!&ndash; WARNING: Respond.js doesn't work if you view the page via file:// &ndash;&gt;-->
-<!--    &lt;!&ndash;[if lt IE 9]>-->
-<!--    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
-<!--    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
-<!--    <![endif]&ndash;&gt;-->
-<!--    &lt;!&ndash;    <script src="../../../src/views/theme/assets/plugins/nprogress/nprogress.js"></script>&ndash;&gt;-->
+    <!--    &lt;!&ndash;-->
+    <!--      HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries-->
+    <!--    &ndash;&gt;-->
+    <!--    &lt;!&ndash; WARNING: Respond.js doesn't work if you view the page via file:// &ndash;&gt;-->
+    <!--    &lt;!&ndash;[if lt IE 9]>-->
+    <!--    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
+    <!--    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
+    <!--    <![endif]&ndash;&gt;-->
+    <!--    &lt;!&ndash;    <script src="../../../src/views/theme/assets/plugins/nprogress/nprogress.js"></script>&ndash;&gt;-->
 </head>
 
 <body class="header-fixed sidebar-fixed sidebar-dark header-light" id="body">
@@ -110,6 +110,13 @@
                     </li>
 
                     <li class="has-sub ">
+                        <a class="sidenav-item-link" href="#createSubject">
+                            <i class="mdi mdi-folder-multiple-outline"></i>
+                            <span class="nav-text">Create Subject</span>
+                        </a>
+                    </li>
+
+                    <li class="has-sub ">
                         <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse"
                            data-target="#tables"
                            aria-expanded="false" aria-controls="tables">
@@ -126,6 +133,7 @@
                             <span class="nav-text">Gradebook</span>
                         </a>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -358,29 +366,15 @@
                         <!-- User Account -->
                         <li class="dropdown user-menu">
                             <button href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                <img src="../../../src/views/theme/assets/img/user/user.png" class="user-image"
-                                     alt="User Image"/>
+                                <i class="bi bi-person" id="person-icon"></i>
                                 <span class="d-none d-lg-inline-block">{{name}}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <!-- User image -->
                                 <li class="dropdown-header">
-                                    <img src="../../../src/views/theme/assets/img/user/user.png" class="img-circle"
-                                         alt="User Image"/>
                                     <div class="d-inline-block">
                                         {{name}} <small class="pt-1">{{email}}</small>
                                     </div>
-                                </li>
-
-                                <li>
-                                    <a href="user-profile.html">
-                                        <i class="mdi mdi-account"></i> My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="mdi mdi-email"></i> Messages
-                                    </a>
                                 </li>
                                 <li class="dropdown-footer">
                                     <a href="/logout"> <i class="mdi mdi-logout"></i> Log Out </a>
@@ -406,9 +400,6 @@
                         <div class="card card-table-border-none recent-orders" id="recent-orders">
                             <div class="card-header justify-content-between">
                                 <h2>My Subjects</h2>
-                                <div class="date-range-report ">
-                                    <span></span>
-                                </div>
                             </div>
                             <div class="card-body pt-0 pb-5">
                                 <table class="table card-table table-responsive table-responsive-large"
@@ -418,8 +409,6 @@
                                         <th>Subject ID</th>
                                         <th>Subject Name</th>
                                         <th class="d-none d-lg-table-cell">Students</th>
-                                        <th>Status</th>
-                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -431,10 +420,7 @@
                                                    href="{{this.professor_id}}/subject/{{this.subject_id}}">{{this.name}}
                                                 </a>
                                             </td>
-                                            <td class="d-none d-lg-table-cell">20</td>
-                                            <td>
-                                                <span class="badge badge-warning">On going</span>
-                                            </td>
+                                            <td class="d-none d-lg-table-cell">{{this.student_count}}</td>
                                             <td class="text-right">
                                                 <div class="dropdown show d-inline-block widget-dropdown">
                                                     <a class="dropdown-toggle icon-burger-mini" href="" role="button"
@@ -462,7 +448,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="createSubject">
                     <div class="col-6">
                         <div class="card card-default">
                             <div class="card-header card-header-border-bottom">
@@ -510,14 +496,14 @@
         </div> <!-- End Page Wrapper -->
     </div> <!-- End Wrapper -->
 </div>
-    <!-- Javascript -->
-    <script src="../../../src/views/source/assets/plugins/jquery/jquery.min.js"></script>
-    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../../src/views/theme/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../src/views/source/assets/plugins/simplebar/simplebar.min.js"></script>
-    <script src="../../../src/views/theme/assets/js/sleek.js"></script>
-    <link href="../../../src/views/source/assets/options/optionswitch.css" rel="stylesheet">
-    <script src="../../../src/views/source/assets/options/optionswitcher.js"></script>
+<!-- Javascript -->
+<script src="../../../src/views/source/assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../../src/views/theme/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../../src/views/source/assets/plugins/simplebar/simplebar.min.js"></script>
+<script src="../../../src/views/theme/assets/js/sleek.js"></script>
+<link href="../../../src/views/source/assets/options/optionswitch.css" rel="stylesheet">
+<script src="../../../src/views/source/assets/options/optionswitcher.js"></script>
 
 </body>
 </html>

@@ -4,6 +4,77 @@ const query = require('../models/dbQueries')
 const db = require('../models/dbConnection');
 const {customAlphabet} = require('nanoid');
 const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const multer = require('multer');
+
+// Multer configuration
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Specify the destination directory for uploaded files
+        cb(null, 'C:/Users/Bega/Desktop/STUMA/Subject-Management-System/pdfs');
+    },
+    filename: function (req, file, cb) {
+        // Use the original filename
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({storage: storage});
+
+exports.uploadLectures = (req, res) => {
+    upload.single('pdfFile')(req, res, err => {
+        if (err instanceof multer.MulterError) {
+            // Handle Multer errors
+            return res.status(400).send('File upload error: ' + err.message);
+        } else if (err) {
+            // Handle other errors
+            console.error('Error uploading file:', err);
+            return res.status(500).send('Internal server error 1');
+        }
+
+        // Access the uploaded file via req.file
+        const filePath = req.file.path;
+        const filename = req.file.originalname;
+        const {Id, subjectId} = req.params;
+
+        // Save filePath to your database using the model
+        query.savePdf(Id, subjectId, filePath, filename, "lecture")
+            .then(() => {
+                res.redirect(`/welcome/${Id}/subject/${subjectId}`)
+            })
+            .catch(err => {
+                console.error('Error uploading file:', err);
+                res.status(500).send('Internal server error 2');
+            });
+    });
+};
+
+exports.uploadLabs = (req, res) => {
+    upload.single('pdfFile')(req, res, err => {
+        if (err instanceof multer.MulterError) {
+            // Handle Multer errors
+            return res.status(400).send('File upload error: ' + err.message);
+        } else if (err) {
+            // Handle other errors
+            console.error('Error uploading file:', err);
+            return res.status(500).send('Internal server error 1');
+        }
+
+        // Access the uploaded file via req.file
+        const filePath = req.file.path;
+        const filename = req.file.originalname;
+        const {Id, subjectId} = req.params;
+
+        // Save filePath to your database using the model
+        query.savePdf(Id, subjectId, filePath, filename, "lab")
+            .then(() => {
+                res.redirect(`/welcome/${Id}/subject/${subjectId}`)
+            })
+            .catch(err => {
+                console.error('Error uploading file:', err);
+                res.status(500).send('Internal server error 2');
+            });
+    });
+};
 
 function isAdmin(req, res, next) {
     // Check if the user is authenticated
@@ -91,7 +162,7 @@ exports.welcome = async (req, res) => {
             email: req.user.Email,
             professorId,
             subjects,
-            layout: 'page'
+            layout: 'page',
         });
     }
 };
@@ -409,7 +480,9 @@ exports.getAvailableSubjects = async (req, res) => {
 
 exports.viewSubjectDetails = async (req, res) => {
     const {Id, subjectId} = req.params;
-    let descriptionLine;
+
+    const lecturePath = await query.getPdfFilePath(subjectId, "lecture");
+    const labPath = await query.getPdfFilePath(subjectId, "lab");
 
     if (req.user.RoleOfUser === 'Student') {
 
@@ -426,17 +499,17 @@ exports.viewSubjectDetails = async (req, res) => {
             name: req.user.NameOfUser,
             email: req.user.Email,
             descriptionText: descriptionRows.description,
-            announcementRows
+            announcementRows,
+            lectureFilePath: lecturePath,
+            labFilePath: labPath
         });
     }
 
     if (req.user.RoleOfUser === 'Professor') {
-        const isProfessor = true;
-
         try {
             const [descriptionRows] = await query.getDescription(subjectId);
 
-            descriptionLine = descriptionRows.description;
+            const descriptionLine = descriptionRows.description;
 
             let announcementRows = await query.getAnnouncement(subjectId);
 
@@ -444,26 +517,39 @@ exports.viewSubjectDetails = async (req, res) => {
 
             const subjects = await query.getAllProfessorSubjects(Id);
 
+            const students = await query.getStudentsOfSubject(subjectId);
+
+            const [numberOfStudents] = await query.getNumberOfStudentsInSubject(subjectId);
+
             res.render('subject_new_professor', {
                 subject_name: subject_result[0].subject_name,
-                isProfessor,
                 Id: Id,
                 name: req.user.NameOfUser,
                 email: req.user.Email,
                 subjectId,
                 descriptionText: descriptionLine,
                 announcementRows,
-                subjects
+                subjects,
+                lectureFilePath: lecturePath,
+                labFilePath: labPath,
+                students,
+                numberOfStudents: numberOfStudents.student_count
             });
 
         } catch (error) {
-            console.error('Error retrieving description:', error);
-            throw new Error('Failed to retrieve description from the database');
+            console.error('Error retrieving data:', error);
+            throw new Error('Failed to retrieve data from the database');
         }
-
-
     }
 };
+
+exports.deletePdf = async (req, res) => {
+    const {pdfId} = req.params;
+
+    await query.deletePdfFile(pdfId);
+
+    res.redirect(`/welcome/${req.params.Id}/subject/${req.params.subjectId}`)
+}
 
 exports.editSubjectDescription = async (req, res) => {
     // Check if description already exists for the subject
