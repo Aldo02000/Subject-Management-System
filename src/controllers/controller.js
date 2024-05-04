@@ -10,7 +10,7 @@ const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // Specify the destination directory for uploaded files
-        cb(null, 'C:/Users/Bega/Desktop/STUMA/Subject-Management-System/pdfs');
+        cb(null, './pdfs');
     },
     filename: function (req, file, cb) {
         // Use the original filename
