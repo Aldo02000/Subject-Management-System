@@ -3,10 +3,13 @@
     <h1>Users</h1>
   </div>
   <div class="col-md-3 d-flex justify-content-end">
-    <a href="/adduser" type="button" class="btn btn-primary mb-3">+ Add User</a>
+    <a href="/addUser" type="button" class="btn btn-primary mb-3">+ Add User</a>
   </div>
   <div class="col-md-3 d-flex justify-content-end">
-    <a href="/logout" type="button" class="btn btn-dark mb-3">Log Out</a>
+      <form action="/logout" method="POST">
+          <button class="btn btn-dark mb-3">Log Out</button>
+      </form>
+<!--    <a href="/logout" type="button" class="btn btn-dark mb-3">Log Out</a>-->
   </div>
 </div>
 
@@ -24,7 +27,7 @@
   <tbody>
 
 
-    {{#each results}}
+    {{#each users}}
     <tr class="text-center">
       <th scope="row">{{this.Id}}</th>
       <td>{{this.NameOfUser}}</td>

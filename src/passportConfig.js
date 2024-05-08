@@ -2,39 +2,28 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const connection = require('./models/dbConnection');
+const userService = require('./services/userService');
 
 function initPassport() {
 
     // Configure the local strategy for use by Passport.
-    passport.use(new LocalStrategy(
-        function (username, password, done) {
-            connection.query('SELECT * FROM User WHERE Id = ?', [username], function (error, results, fields) {
-                if (error) return done(error);
+    passport.use('local',new LocalStrategy(
+        async function (username, password, done) {
 
-                // If no user found with the entered username
-                if (results.length === 0) {
-                    return done(null, false, { message: 'No user found with the entered username' });
-                } else {
-                    const user = results[0];
+            const user = await userService.findUser(username).then(function (user) {
+                return user;
+            })
 
-                    // Compare entered password with stored hashed password
-                    bcrypt.compare(password, user.AccountPassword, function (err, result) {
-                        if (err) return done(err);
-
-                        if (result) {
-                            return done(null, user);
-                        } else {
-                            return done(null, false, { message: 'Invalid password' });
-                        }
-                    });
-                }
-            });
+            if (user.hasPassword(password)) {
+                return done(null, user);
+            }
+            return done(null, false, {message: 'Invalid password'});
         }
     ));
 
     // Serialize the user object to the session.
     passport.serializeUser(function (user, done) {
-        done(null, user.Id);
+        done(null, user.id);
     });
 
     // Deserialize the user object from the session.

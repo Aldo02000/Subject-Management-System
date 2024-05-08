@@ -1,7 +1,7 @@
 const connection = require('./dbConnection');
 const bcrypt = require('bcrypt');
 
-function findUsers(searchTerm) {
+function searchUsers(searchTerm) {
     return new Promise((resolve, reject) => {
         connection.query('SELECT * FROM User WHERE NameOfUser LIKE ? OR Id LIKE ?', ['%' + searchTerm + '%', '%' + searchTerm + '%'], (err, results) => {
             if (err) {
@@ -29,6 +29,19 @@ function getUserByID(ID) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM User WHERE Id = ?';
         connection.query(sql, [ID], (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+function getUserByEmail(email) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM User WHERE Email = ?';
+        connection.query(sql, [email], (err, results) => {
             if (err) {
                 reject(err);
             } else {
@@ -76,17 +89,7 @@ function deleteUser(ID) {
     });
 }
 
-function editUser(ID) {
-    return new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM User WHERE ID = ?', [ID], (err, results) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(results);
-            }
-        });
-    });
-}
+
 
 
 function updateUser(sql, values) {
@@ -409,12 +412,11 @@ function getNumberOfStudentsInSubject(subjectId) {
 
 
 module.exports = {
-    findUsers,
+    searchUsers,
     showUsers,
     getUserByID,
     addUser,
     deleteUser,
-    editUser,
     updateUser,
     createSubject,
     getAllSubjects,
@@ -437,5 +439,6 @@ module.exports = {
     savePdf,
     deletePdfFile,
     getStudentsOfSubject,
-    getNumberOfStudentsInSubject
+    getNumberOfStudentsInSubject,
+    getUserByEmail
 };
