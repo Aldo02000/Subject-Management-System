@@ -7,6 +7,9 @@ const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
+const nocache = require('nocache');
+
+app.use(nocache());
 
 // Set the views directory to 'views' and join it with the current directory (__dirname)
 app.set('views', path.join(__dirname, 'src', 'views', 'theme'));

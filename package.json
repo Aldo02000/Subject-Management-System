@@ -14,6 +14,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.9.2",
     "nanoid": "^3.3.7",
+    "nocache": "^4.0.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
   },

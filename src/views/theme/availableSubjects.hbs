@@ -68,7 +68,7 @@
                             <span class="nav-text">My Subjects</span> <b class="caret"></b>
                         </a>
 
-                        {{#each enrolledCourses}}
+                        {{#each enrolledSubjects}}
                             <ul class="collapse " id="app" data-parent="#sidebar-menu">
                                 <div class="sub-menu">
                                     <li class="">
@@ -132,7 +132,7 @@
                         <button type="button" name="search" id="search-btn" class="btn btn-flat">
                             <i class="mdi mdi-magnify"></i>
                         </button>
-                        <form action="/welcome/{{studentId}}/search" method="GET">
+                        <form action="/searchSubject" method="POST">
                             <input type="text" name="term" id="search-input" class="form-control"
                                    placeholder="Search a subject"
                                    autofocus autocomplete="off"/>
@@ -354,7 +354,10 @@
                                     </div>
                                 </li>
                                 <li class="dropdown-footer">
-                                    <a href="/logout"> <i class="mdi mdi-logout"></i> Log Out </a>
+                                    <form action="/logout" method="POST" id="logout-form">
+                                        <i class="mdi mdi-logout"></i>
+                                        <button> Log Out</button>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -389,7 +392,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {{#each availableCourses}}
+                                    {{#each availableSubjects}}
                                         <tr>
                                             <td>{{this.subject_id}}</td>
                                             <td>

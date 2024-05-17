@@ -23,20 +23,12 @@ function initPassport() {
 
     // Serialize the user object to the session.
     passport.serializeUser(function (user, done) {
-        done(null, user.id);
+        done(null, user);
     });
 
     // Deserialize the user object from the session.
-    passport.deserializeUser(function (id, done) {
-        connection.query('SELECT * FROM User WHERE Id = ?', [id], function (error, results, fields) {
-            if (error) return done(error);
-
-            if (results.length === 0) {
-                return done(null, false);
-            } else {
-                return done(null, results[0]);
-            }
-        });
+    passport.deserializeUser(function (user, done) {
+        return  done(null, user);
     });
 
 

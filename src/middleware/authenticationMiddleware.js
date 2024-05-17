@@ -4,3 +4,11 @@ exports.checkAuthentication = (req, res, next) => {
     }
     next();
 }
+
+exports.checkAuthenticationSuccess = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        console.log("redirected to /user.")
+        res.redirect('/user');
+    }
+    next();
+}

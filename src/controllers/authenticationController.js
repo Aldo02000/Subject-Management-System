@@ -22,17 +22,7 @@ exports.loginUser = (req, res, next) => {
                 return next(err);
             }
 
-            //TODO: CHECK FOR USER ROLE AND RENDER SPECIFIC PAGE
-
-            userController.renderUserPage(user, res);
-
-            // res.redirect('/user');
-
-            // Authentication successful, generate the redirect URL with the user ID
-            // const redirectURL = `/welcome`;
-
-            // Redirect to the generated URL
-            // return res.redirect(redirectURL);
+            res.redirect('/user');
         });
     })(req, res, next);
 };
@@ -42,6 +32,6 @@ exports.logout = (req, res, next) => {
         if (err) {
             return next(err);
         }
-        res.redirect('/login');
+        res.redirect('/');
     })
 }

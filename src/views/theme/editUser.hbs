@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+        <li class="breadcrumb-item"><a href="/user">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit User</li>
     </ol>
 </nav>
@@ -19,13 +19,10 @@
 </div>
 {{/if}}
 
-{{#each results}}
-
 <div class="alert alert-info" role="alert">
-  <h5 name="userID">ID: {{this.Id}}</h5>
+  <h5 name="userID">ID: {{user.id}}</h5>
 </div>
 
-<form class="row g-3 needs-validation" action="/edituser/{{this.Id}}" method="POST" novalidate>
+<form class="row g-3 needs-validation" action="/edituser/{{user.id}}" method="POST" novalidate>
     {{> user-form}}
 </form>
-{{/each}}
