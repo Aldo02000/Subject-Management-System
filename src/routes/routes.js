@@ -41,9 +41,9 @@ router.get('/subject/:subjectId', subjectController.viewSubjectDetails);
 router.post('/subject/:subjectId/edit-description', subjectController.editSubjectDescription);
 router.post('/subject/:subjectId/add-announcement', subjectController.addAnnouncement);
 router.post('/subject/:subjectId/deleteAnnouncement/:announcementId', subjectController.deleteAnnouncement);
-router.get('/availableSubjects', subjectController.getAvailableSubjects);
 router.post('/subject/:subjectId/upload-lecture', subjectController.uploadLectures);
 router.post('/subject/:subjectId/upload-labs', subjectController.uploadLabs);
+router.post('/subject/:subjectId/upload-exams', subjectController.uploadExams);
 router.post('/subject/:subjectId/delete-pdf/:pdfId', subjectController.deletePdf)
 
 module.exports = router;

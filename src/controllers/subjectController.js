@@ -6,6 +6,7 @@ async function viewSubjectDetails(req, res) {
 
     const lecturePath = await subjectService.getPdfFilePath(subjectId, "lecture");
     const labPath = await subjectService.getPdfFilePath(subjectId, "lab");
+    const examPath = await subjectService.getPdfFilePath(subjectId, "exam");
 
     if (req.user.role === 'Student') {
 
@@ -24,7 +25,8 @@ async function viewSubjectDetails(req, res) {
             descriptionText: descriptionRows.description,
             announcementRows,
             lectureFilePath: lecturePath,
-            labFilePath: labPath
+            labFilePath: labPath,
+            examFilePath: examPath,
         });
     }
 
@@ -55,6 +57,7 @@ async function viewSubjectDetails(req, res) {
                 subjects,
                 lectureFilePath: lecturePath,
                 labFilePath: labPath,
+                examFilePath: examPath,
                 students,
                 numberOfStudents: numberOfStudents.student_count
             });
@@ -94,26 +97,6 @@ async function deleteAnnouncement(req, res, next) {
 
     // Redirect back to the subject details page
     res.redirect(`/subject/${req.params.subjectId}`);
-}
-
-async function getAvailableSubjects(req, res, next) {
-
-    const studentId = req.user.id;
-
-    try {
-        const availableCourses = await subjectService.getAvailableSubjects(studentId);
-        const enrolledCourses = await subjectService.getEnrolledCourses(studentId);
-        res.render('availableSubjects', {
-            availableCourses,
-            name: req.user.name,
-            email: req.user.email,
-            enrolledCourses,
-            studentId
-        });
-    } catch (err) {
-        console.error('Error searching for subjects:', err);
-        res.status(500).json({error: 'An error occurred while searching for subjects'});
-    }
 }
 
 const multer = require('multer');
@@ -190,6 +173,35 @@ async function uploadLabs(req, res, next) {
     });
 }
 
+async function uploadExams(req, res, next) {
+
+    upload.single('pdfFile')(req, res, err => {
+        if (err instanceof multer.MulterError) {
+            // Handle Multer errors
+            return res.status(400).send('File upload error: ' + err.message);
+        } else if (err) {
+            // Handle other errors
+            console.error('Error uploading file:', err);
+            return res.status(500).send('Internal server error 1');
+        }
+
+        // Access the uploaded file via req.file
+        const filePath = req.file.path;
+        const filename = req.file.originalname;
+        const {subjectId} = req.params;
+
+        // Save filePath to your database using the model
+        subjectService.savePdf(subjectId, filePath, filename, "exam")
+            .then(() => {
+                res.redirect(`/subject/${subjectId}`)
+            })
+            .catch(err => {
+                console.error('Error uploading file:', err);
+                res.status(500).send('Internal server error 2');
+            });
+    });
+}
+
 async function deletePdf(req, res, next) {
     const {pdfId} = req.params;
 
@@ -203,8 +215,8 @@ module.exports = {
     editSubjectDescription,
     addAnnouncement,
     deleteAnnouncement,
-    getAvailableSubjects,
     uploadLectures,
     uploadLabs,
-    deletePdf
+    deletePdf,
+    uploadExams
 }
