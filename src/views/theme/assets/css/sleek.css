@@ -85,6 +85,10 @@ p {
   margin-bottom: 1rem;
 }
 
+#logout-form {
+  padding: 10px 10px 10px 19px
+}
+
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;

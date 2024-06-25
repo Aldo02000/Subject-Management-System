@@ -24,11 +24,6 @@
 </head>
 
 <body class="header-fixed sidebar-fixed sidebar-dark header-light" id="body">
-<script>
-    NProgress.configure({showSpinner: false});
-    NProgress.start();
-</script>
-
 <div id="toaster"></div>
 
 <!-- ====================================
@@ -43,7 +38,7 @@
         <div id="sidebar" class="sidebar sidebar-with-footer">
             <!-- Aplication Brand -->
             <div class="app-brand">
-                <a href="/welcome/{{studentId}}" title="Sleek Dashboard">
+                <a href="/user" title="Sleek Dashboard">
                     <svg
                             class="brand-icon"
                             xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +72,7 @@
                                 <div class="sub-menu">
                                     <li class="">
                                         <a class="sidenav-item-link"
-                                           href="{{this.student_id}}/subject/{{this.subject_id}}">
+                                           href="/subject/{{this.subject_id}}">
                                             <span class="nav-text">{{this.name}}</span>
                                         </a>
                                     </li>
@@ -87,7 +82,7 @@
                     </li>
 
                     <li class="has-sub ">
-                        <a class="sidenav-item-link" href="{{studentId}}/availableSubjects">
+                        <a class="sidenav-item-link" href="/user/availableSubjects">
                             <i class="mdi mdi-folder-multiple-outline"></i>
                             <span class="nav-text">Available Subjects</span>
                         </a>
@@ -134,211 +129,16 @@
                         <button type="button" name="search" id="search-btn" class="btn btn-flat">
                             <i class="mdi mdi-magnify"></i>
                         </button>
-                        <form action="{{studentId}}/search" method="GET">
+                        <form action="/searchSubject" method="POST">
                             <input type="text" name="term" id="search-input" class="form-control"
-                                     placeholder="Search a subject"
-                                     autofocus autocomplete="off"/>
+                                   placeholder="Search a subject"
+                                   autofocus autocomplete="off"/>
                         </form>
-
-                    </div>
-                    <div id="search-results-container">
-                        <ul id="search-results"></ul>
                     </div>
                 </div>
 
                 <div class="navbar-right ">
                     <ul class="nav navbar-nav">
-                        <li class="dropdown notifications-menu custom-dropdown">
-                            <button class="dropdown-toggle notify-toggler custom-dropdown-toggler">
-                                <i class="mdi mdi-bell-outline"></i>
-                            </button>
-
-                            <div class="card card-default dropdown-notify dropdown-menu-right mb-0">
-                                <div class="card-header card-header-border-bottom px-3">
-                                    <h2>Notifications</h2>
-                                </div>
-
-                                <div class="card-body px-0 py-3">
-                                    <ul class="nav nav-tabs nav-style-border p-0 justify-content-between" id="myTab"
-                                        role="tablist">
-                                        <li class="nav-item mx-3 my-0 py-0">
-                                            <a class="nav-link active pb-3" id="home2-tab" data-toggle="tab"
-                                               href="#home2" role="tab" aria-controls="home2" aria-selected="true">All
-                                                (3)</a>
-                                        </li>
-
-                                        <li class="nav-item mx-3 my-0 py-0">
-                                            <a class="nav-link pb-3" id="profile2-tab" data-toggle="tab"
-                                               href="#profile2" role="tab" aria-controls="profile2"
-                                               aria-selected="false">Msgs (1)</a>
-                                        </li>
-
-                                        <li class="nav-item mx-3 my-0 py-0">
-                                            <a class="nav-link pb-3" id="contact2-tab" data-toggle="tab"
-                                               href="#contact2" role="tab" aria-controls="contact2"
-                                               aria-selected="false">Other (2)</a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content" id="myTabContent3">
-                                        <div class="tab-pane fade show active" id="home2" role="tabpanel"
-                                             aria-labelledby="home2-tab">
-                                            <ul class="list-unstyled" data-simplebar style="height: 360px">
-
-                                                <li>
-                                                    <a href="javscript:void(0)"
-                                                       class="media media-message media-notification event-active">
-
-                                                        <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-info text-white">
-                                                            <i class="mdi mdi-calendar-check font-size-20"></i>
-                                                        </div>
-
-                                                        <div class="media-body d-flex justify-content-between">
-                                                            <div class="message-contents">
-                                                                <h4 class="title">New Lecture Added</h4>
-                                                                <p class="last-msg font-size-14">30/Apr/2024 </p>
-
-                                                                <span class="font-size-12 font-weight-medium text-secondary">
-                                        <i class="mdi mdi-clock-outline"></i> 10 min ago...
-                                      </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="javscript:void(0)"
-                                                       class="media media-message media-notification">
-
-                                                        <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-purple text-white">
-                                                            <i class="mdi mdi-playlist-check font-size-20"></i>
-                                                        </div>
-
-                                                        <div class="media-body d-flex justify-content-between">
-                                                            <div class="message-contents">
-                                                                <h4 class="title">Task complete</h4>
-                                                                <p class="last-msg font-size-14">Nam ut nisi erat. Ut
-                                                                    quis tortor varius, hendrerit arcu quis, congue
-                                                                    nisl. In scelerisque, sem ut ve.</p>
-
-                                                                <span class="font-size-12 font-weight-medium text-secondary">
-                                        <i class="mdi mdi-clock-outline"></i> 2 hrs ago...
-                                      </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="javscript:void(0)"
-                                                       class="media media-message media-notification">
-                                                        <div class="position-relative mr-3">
-                                                            <img class="rounded-circle"
-                                                                 src="../../../src/views/theme/assets/img/user/u6.jpg"
-                                                                 alt="Image">
-                                                            <span class="status away"></span>
-                                                        </div>
-                                                        <div class="media-body d-flex justify-content-between">
-                                                            <div class="message-contents">
-                                                                <h4 class="title">William</h4>
-                                                                <p class="last-msg">Donec mattis augue a nisl consequat,
-                                                                    nec imperdiet ex rutrum. Fusce et vehicula enim. Sed
-                                                                    in enim eu odio vehic.</p>
-
-                                                                <span class="font-size-12 font-weight-medium text-secondary">
-                                        <i class="mdi mdi-clock-outline"></i> 1 hrs ago...
-                                      </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-
-                                        <div class="tab-pane fade" id="profile2" role="tabpanel"
-                                             aria-labelledby="profile2-tab">
-                                            <ul class="list-unstyled" data-simplebar style="height: 360px">
-                                                <li>
-                                                    <a href="javscript:void(0)"
-                                                       class="media media-message media-notification">
-                                                        <div class="position-relative mr-3">
-                                                            <img class="rounded-circle"
-                                                                 src="../../../src/views/theme/assets/img/user/u6.jpg"
-                                                                 alt="Image">
-                                                            <span class="status away"></span>
-                                                        </div>
-                                                        <div class="media-body d-flex justify-content-between">
-                                                            <div class="message-contents">
-                                                                <h4 class="title">William</h4>
-                                                                <p class="last-msg">Donec mattis augue a nisl consequat,
-                                                                    nec imperdiet ex rutrum. Fusce et vehicula enim. Sed
-                                                                    in enim eu odio vehic.</p>
-
-                                                                <span class="font-size-12 font-weight-medium text-secondary">
-                                        <i class="mdi mdi-clock-outline"></i> 1 hrs ago...
-                                      </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-
-                                        <div class="tab-pane fade" id="contact2" role="tabpanel"
-                                             aria-labelledby="contact2-tab">
-                                            <ul class="list-unstyled" data-simplebar style="height: 360px">
-                                                <li>
-                                                    <a href="javscript:void(0)"
-                                                       class="media media-message media-notification event-active">
-
-                                                        <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-info text-white">
-                                                            <i class="mdi mdi-calendar-check font-size-20"></i>
-                                                        </div>
-
-                                                        <div class="media-body d-flex justify-content-between">
-                                                            <div class="message-contents">
-                                                                <h4 class="title">New Lecture Added</h4>
-                                                                <p class="last-msg font-size-14">30/Apr/2024 </p>
-
-                                                                <span class="font-size-12 font-weight-medium text-secondary">
-                                        <i class="mdi mdi-clock-outline"></i> 10 min ago...
-                                      </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="javscript:void(0)"
-                                                       class="media media-message media-notification">
-
-                                                        <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-purple text-white">
-                                                            <i class="mdi mdi-playlist-check font-size-20"></i>
-                                                        </div>
-
-                                                        <div class="media-body d-flex justify-content-between">
-                                                            <div class="message-contents">
-                                                                <h4 class="title">Task complete</h4>
-                                                                <p class="last-msg font-size-14">Nam ut nisi erat. Ut
-                                                                    quis tortor varius, hendrerit arcu quis, congue
-                                                                    nisl. In scelerisque, sem ut ve.</p>
-
-                                                                <span class="font-size-12 font-weight-medium text-secondary">
-                                        <i class="mdi mdi-clock-outline"></i> 2 hrs ago...
-                                      </span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
                         <li class="right-sidebar-in right-sidebar-2-menu">
                             <i class="mdi mdi-settings"></i>
                         </li>
@@ -356,7 +156,10 @@
                                     </div>
                                 </li>
                                 <li class="dropdown-footer">
-                                    <a href="/logout"> <i class="mdi mdi-logout"></i> Log Out </a>
+                                    <form action="/logout" method="POST" id="logout-form">
+                                        <i class="mdi mdi-logout"></i>
+                                        <button> Log Out</button>
+                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -396,7 +199,7 @@
                                             <td>{{this.subject_id}}</td>
                                             <td>
                                                 <a class="text-dark"
-                                                   href="{{this.student_id}}/subject/{{this.subject_id}}">{{this.name}}
+                                                   href="/subject/{{this.subject_id}}">{{this.name}}
                                                 </a>
                                             </td>
                                             <td class="d-none d-lg-table-cell">{{this.student_count}}</td>
@@ -427,14 +230,14 @@
     </div> <!-- End Page Wrapper -->
 </div><!-- End Wrapper -->
 
-    <!-- Javascript -->
-    <script src="../../../src/views/source/assets/plugins/jquery/jquery.min.js"></script>
-    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../../../src/views/theme/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../src/views/source/assets/plugins/simplebar/simplebar.min.js"></script>
-    <script src="../../../src/views/theme/assets/js/sleek.js"></script>
-    <link href="../../../src/views/source/assets/options/optionswitch.css" rel="stylesheet">
-    <script src="../../../src/views/source/assets/options/optionswitcher.js"></script>
+<!-- Javascript -->
+<script src="../../../src/views/source/assets/plugins/jquery/jquery.min.js"></script>
+<script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../../src/views/theme/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../../src/views/source/assets/plugins/simplebar/simplebar.min.js"></script>
+<script src="../../../src/views/theme/assets/js/sleek.js"></script>
+<link href="../../../src/views/source/assets/options/optionswitch.css" rel="stylesheet">
+<script src="../../../src/views/source/assets/options/optionswitcher.js"></script>
 </body>
 </html>
 
